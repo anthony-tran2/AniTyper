@@ -1,0 +1,41 @@
+* {
+  font-family: 'Roboto Mono', monospace;
+}
+
+h1 {
+  font-size: 48px;
+  padding-top: 0.5rem;
+  padding-bottom: 2rem;
+}
+
+.background-color-gray {
+  background-color: #efefef;
+}
+
+.background-color-white {
+  background-color: white;
+}
+
+.inactive {
+  color: #9b9fa1;
+}
+
+.logo-color {
+  color: #222831;
+}
+
+.active {
+  color: #393e46;
+}
+
+.correct {
+  color: #00adb5;
+}
+
+.incorrect {
+  color: #dc2626;
+}
+
+.margin-block-0 {
+  margin-block: 0;
+}

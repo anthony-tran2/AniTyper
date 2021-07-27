@@ -38,3 +38,20 @@
 .margin-bottom-2rem {
   margin-bottom: 2rem;
 }
+
+@media screen and (min-width: 1152px) {
+  p,
+  h3 {
+    font-size: 41px;
+  }
+
+  h1 {
+    font-size: 109px;
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .margin-bottom-2rem {
+    margin-bottom: 4rem;
+  }
+}

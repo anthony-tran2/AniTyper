@@ -20,8 +20,8 @@
   width: 50%;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1152px) {
   .container {
-    padding-inline: 1rem;
+    padding-inline: 4rem;
   }
 }

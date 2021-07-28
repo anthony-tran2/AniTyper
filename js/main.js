@@ -1,4 +1,6 @@
 var $p = document.querySelector('p.inactive');
+var $webPage = document.querySelector('body');
+var currentCharacter = 0;
 
 function gameLoading(event) {
   var xhr = new XMLHttpRequest();
@@ -17,7 +19,7 @@ function gameLoading(event) {
         $letter.textContent = wordList[i][wordIndex];
         $newWord.appendChild($letter);
       }
-      var $space = document.createElement('space');
+      var $space = document.createElement('letter');
       $space.textContent = ' ';
       $p.appendChild($newWord);
       $p.appendChild($space);
@@ -31,3 +33,24 @@ function gameLoading(event) {
 }
 
 gameLoading();
+
+$webPage.addEventListener('keydown', function (event) {
+  var $characters = document.querySelectorAll('letter');
+  if (event.key === $characters[currentCharacter].textContent) {
+    $characters[currentCharacter].className = 'correct';
+    currentCharacter++;
+    $characters[currentCharacter].className = 'current-character';
+  } else if (event.key === 'Backspace') {
+    $characters[currentCharacter].className = '';
+    currentCharacter--;
+    $characters[currentCharacter].className = 'current-character';
+  } else if (event.key.length < 2) {
+    $characters[currentCharacter].className = 'incorrect';
+    currentCharacter++;
+    $characters[currentCharacter].className = 'current-character';
+  }
+  if ($characters[currentCharacter].textContent !== ' ') {
+    var $currentWord = $characters[currentCharacter].closest('word');
+    $currentWord.className = 'active';
+  }
+});

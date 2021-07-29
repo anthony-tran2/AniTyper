@@ -3,6 +3,7 @@ var $webPage = document.querySelector('body');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
+var $stats = document.querySelector('div.stats');
 
 function gameLoading(event) {
   var xhr = new XMLHttpRequest();
@@ -44,7 +45,6 @@ function timer() {
   seconds += 1;
   if (currentCharacter + 1 === $characters.length) {
     clearInterval(intervalId);
-    var $stats = document.querySelector('div.stats');
     $stats.classList.toggle('hidden');
     var $accuracy = document.querySelector('p.accuracy');
     var $wpm = document.querySelector('p.wpm');
@@ -89,6 +89,7 @@ $webPage.addEventListener('keydown', function (event) {
     clearInterval(intervalId);
     seconds = null;
     intervalId = null;
+    $stats.className = 'row stats margin-bottom-stats font-size-36px justify-center hidden';
     gameLoading();
   }
   if (event.key === ' ' && event.target === document.body) {

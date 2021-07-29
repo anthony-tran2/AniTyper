@@ -1,0 +1,27 @@
+.hidden {
+  display: none !important;
+}
+
+.container {
+  margin: 0 auto;
+  padding-inline: 0.5rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column-full {
+  width: 100%;
+}
+
+.column-half {
+  width: 50%;
+}
+
+@media screen and (min-width: 1152px) {
+  .container {
+    padding-inline: 4rem;
+  }
+}

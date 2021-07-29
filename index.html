@@ -5,14 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AJAX Project</title>
   <link rel="icon" href="images/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
+  <header class="background-color-gray">
+    <div class="container">
+      <h1 class="margin-block-0 logo-color">AniType</h1>
+    </div>
   </header>
   <main>
+    <div data-view="typing-game" class="container">
+      <div class="row">
+        <h3 class="margin-top-0 margin-bottom-2rem anime"></h3>
+      </div>
+      <div class="row">
+        <h3 class="margin-top-0 character"></h3>
+      </div>
+      <div class="row">
+        <p class="inactive"></p>
+      </div>
+    </div>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>

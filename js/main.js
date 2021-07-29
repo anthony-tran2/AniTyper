@@ -1,6 +1,8 @@
 var $p = document.querySelector('p.inactive');
 var $webPage = document.querySelector('body');
 var currentCharacter = 0;
+var seconds = null;
+var intervalId = null;
 
 function gameLoading(event) {
   var xhr = new XMLHttpRequest();
@@ -37,6 +39,14 @@ function gameLoading(event) {
 
 gameLoading();
 
+function timer() {
+  var $characters = document.querySelectorAll('span.letter');
+  seconds += 1;
+  if (currentCharacter + 1 === $characters.length) {
+    clearInterval(intervalId);
+  }
+}
+
 $webPage.addEventListener('keydown', function (event) {
   var $characters = document.querySelectorAll('span.letter');
   if (event.key === $characters[currentCharacter].textContent) {
@@ -67,5 +77,8 @@ $webPage.addEventListener('keydown', function (event) {
     event.preventDefault();
   } else if (event.key === 'Tab' && event.target === document.body) {
     event.preventDefault();
+  }
+  if (currentCharacter === 1) {
+    intervalId = setInterval(timer, 1000);
   }
 });

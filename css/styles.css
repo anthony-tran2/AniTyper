@@ -39,8 +39,31 @@
   margin-bottom: 2rem;
 }
 
+.margin-bottom-stats {
+  margin-bottom: 1.5rem;
+}
+
+.margin-auto {
+  margin: auto;
+}
+
 .justify-center {
   justify-content: center;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.statStyling {
+  background-color: hsla(183, 100%, 35%, 0.72);
+  border-radius: 6px;
+  display: inline;
+  padding: 1rem 2rem;
 }
 
 .tab {
@@ -51,6 +74,10 @@
 
 .font-size-14px {
   font-size: 14px;
+}
+
+.font-size-36px {
+  font-size: 36px;
 }
 
 @media screen and (min-width: 1152px) {
@@ -69,6 +96,10 @@
     font-size: 37px;
   }
 
+  .font-size-36px {
+    font-size: 96px;
+  }
+
   .tab {
     background-color: hsla(183, 100%, 35%, 0.72);
     border-radius: 4px;
@@ -77,5 +108,11 @@
 
   .margin-bottom-2rem {
     margin-bottom: 4rem;
+  }
+
+  .statStyling {
+    background-color: hsla(183, 100%, 35%, 0.72);
+    border-radius: 6px;
+    display: inline;
   }
 }

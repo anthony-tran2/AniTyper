@@ -63,6 +63,7 @@ $webPage.addEventListener('keydown', function (event) {
 $webPage.addEventListener('keydown', function (event) {
   if (event.key === 'Tab') {
     $p.textContent = '';
+    currentCharacter = 0;
     gameLoading();
   }
 });

@@ -59,14 +59,20 @@
     font-size: 41px;
   }
 
-  .font-size-14px {
-    font-size: 37px;
-  }
-
   h1 {
     font-size: 109px;
     padding-top: 1.3rem;
     padding-bottom: 5.3rem;
+  }
+
+  .font-size-14px {
+    font-size: 37px;
+  }
+
+  .tab {
+    background-color: hsla(183, 100%, 35%, 0.72);
+    border-radius: 4px;
+    padding: 0.8rem;
   }
 
   .margin-bottom-2rem {

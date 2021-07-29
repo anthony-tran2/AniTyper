@@ -13,21 +13,24 @@ function gameLoading(event) {
     $character.textContent = `Character: ${xhr.response.character}`;
     var wordList = xhr.response.quote.split(' ');
     for (var i = 0; i < wordList.length; i++) {
-      var $newWord = document.createElement('word');
-      for (var wordIndex = 0; wordIndex < wordList[i].length; wordIndex++) {
-        var $letter = document.createElement('letter');
-        $letter.textContent = wordList[i][wordIndex];
+      var $newWord = document.createElement('span');
+      $newWord.className = 'word';
+      for (var letterIndex = 0; letterIndex < wordList[i].length; letterIndex++) {
+        var $letter = document.createElement('span');
+        $letter.className = 'letter';
+        $letter.textContent = wordList[i][letterIndex];
         $newWord.appendChild($letter);
       }
-      var $space = document.createElement('letter');
+      var $space = document.createElement('span');
+      $space.className = 'letter';
       $space.textContent = ' ';
       $p.appendChild($newWord);
       $p.appendChild($space);
-      var $firstWord = document.querySelector('word');
-      $firstWord.className = ('active');
-      var $firstCharacter = $firstWord.querySelector('letter');
-      $firstCharacter.className = ('current-character');
     }
+    var $firstWord = document.querySelector('span.word');
+    $firstWord.classList.toggle('active');
+    var $firstCharacter = $firstWord.querySelector('span.letter');
+    $firstCharacter.classList.toggle('current-character');
   });
   xhr.send();
 }
@@ -35,22 +38,24 @@ function gameLoading(event) {
 gameLoading();
 
 $webPage.addEventListener('keydown', function (event) {
-  var $characters = document.querySelectorAll('letter');
+  var $characters = document.querySelectorAll('span.letter');
   if (event.key === $characters[currentCharacter].textContent) {
-    $characters[currentCharacter].className = 'correct';
+    $characters[currentCharacter].classList.toggle('correct');
+    $characters[currentCharacter].classList.toggle('current-character');
     currentCharacter++;
-    $characters[currentCharacter].className = 'current-character';
+    $characters[currentCharacter].classList.toggle('current-character');
   } else if (event.key === 'Backspace') {
-    $characters[currentCharacter].className = '';
+    $characters[currentCharacter].className = 'letter';
     currentCharacter--;
-    $characters[currentCharacter].className = 'current-character';
+    $characters[currentCharacter].className = 'letter current-character';
   } else if (event.key.length < 2) {
-    $characters[currentCharacter].className = 'incorrect';
+    $characters[currentCharacter].classList.toggle('incorrect');
+    $characters[currentCharacter].classList.toggle('current-character');
     currentCharacter++;
-    $characters[currentCharacter].className = 'current-character';
+    $characters[currentCharacter].classList.toggle('current-character');
   }
   if ($characters[currentCharacter].textContent !== ' ') {
-    var $currentWord = $characters[currentCharacter].closest('word');
-    $currentWord.className = 'active';
+    var $currentWord = $characters[currentCharacter].closest('span.word');
+    $currentWord.className = 'word active';
   }
 });

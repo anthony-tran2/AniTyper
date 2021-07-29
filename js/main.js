@@ -44,7 +44,7 @@ $webPage.addEventListener('keydown', function (event) {
     $characters[currentCharacter].classList.toggle('current-character');
     currentCharacter++;
     $characters[currentCharacter].classList.toggle('current-character');
-  } else if (event.key === 'Backspace') {
+  } else if (event.key === 'Backspace' && (currentCharacter + 1 !== $characters.length && currentCharacter !== 0)) {
     $characters[currentCharacter].className = 'letter';
     currentCharacter--;
     $characters[currentCharacter].className = 'letter current-character';
@@ -58,17 +58,11 @@ $webPage.addEventListener('keydown', function (event) {
     var $currentWord = $characters[currentCharacter].closest('span.word');
     $currentWord.className = 'word active';
   }
-});
-
-$webPage.addEventListener('keydown', function (event) {
   if (event.key === 'Tab') {
     $p.textContent = '';
     currentCharacter = 0;
     gameLoading();
   }
-});
-
-window.addEventListener('keydown', function (event) {
   if (event.key === ' ' && event.target === document.body) {
     event.preventDefault();
   } else if (event.key === 'Tab' && event.target === document.body) {

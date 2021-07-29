@@ -86,6 +86,9 @@ $webPage.addEventListener('keydown', function (event) {
   if (event.key === 'Tab') {
     $p.textContent = '';
     currentCharacter = 0;
+    clearInterval(intervalId);
+    seconds = null;
+    intervalId = null;
     gameLoading();
   }
   if (event.key === ' ' && event.target === document.body) {

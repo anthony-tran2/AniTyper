@@ -55,7 +55,7 @@
   text-align: center;
 }
 
-.stats {
+.statStyling {
   background-color: hsla(183, 100%, 35%, 0.72);
   border-radius: 6px;
   display: inline;
@@ -106,7 +106,7 @@
     margin-bottom: 4rem;
   }
 
-  .stats {
+  .statStyling {
     background-color: hsla(183, 100%, 35%, 0.72);
     border-radius: 6px;
     display: inline;

@@ -44,6 +44,8 @@ function timer() {
   seconds += 1;
   if (currentCharacter + 1 === $characters.length) {
     clearInterval(intervalId);
+    var $stats = document.querySelector('div.stats');
+    $stats.classList.toggle('hidden');
   }
 }
 

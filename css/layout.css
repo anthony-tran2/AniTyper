@@ -13,11 +13,15 @@
 }
 
 .column-full {
-  width: 100%;
+  flex-basis: 100%;
 }
 
 .column-half {
-  width: 50%;
+  flex-basis: 50%;
+}
+
+.column-quarter {
+  flex-basis: 25%;
 }
 
 @media screen and (min-width: 1152px) {

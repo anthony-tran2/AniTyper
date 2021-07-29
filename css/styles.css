@@ -39,6 +39,20 @@
   margin-bottom: 2rem;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
+.tab {
+  background-color: hsla(183, 100%, 35%, 0.72);
+  border-radius: 4px;
+  padding: 0.3rem;
+}
+
+.font-size-14px {
+  font-size: 14px;
+}
+
 @media screen and (min-width: 1152px) {
   p,
   h3 {
@@ -49,6 +63,16 @@
     font-size: 109px;
     padding-top: 1.3rem;
     padding-bottom: 5.3rem;
+  }
+
+  .font-size-14px {
+    font-size: 37px;
+  }
+
+  .tab {
+    background-color: hsla(183, 100%, 35%, 0.72);
+    border-radius: 4px;
+    padding: 0.8rem;
   }
 
   .margin-bottom-2rem {

@@ -59,3 +59,19 @@ $webPage.addEventListener('keydown', function (event) {
     $currentWord.className = 'word active';
   }
 });
+
+$webPage.addEventListener('keydown', function (event) {
+  if (event.key === 'Tab') {
+    $p.textContent = '';
+    currentCharacter = 0;
+    gameLoading();
+  }
+});
+
+window.addEventListener('keydown', function (event) {
+  if (event.key === ' ' && event.target === document.body) {
+    event.preventDefault();
+  } else if (event.key === 'Tab' && event.target === document.body) {
+    event.preventDefault();
+  }
+});

@@ -1,3 +1,9 @@
+datalist,
+option,
+input {
+  background-color: #eee;
+}
+
 .background-color-gray {
   background-color: #efefef;
 }

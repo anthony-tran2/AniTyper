@@ -59,7 +59,7 @@ function timer() {
 
 $webPage.addEventListener('keydown', function (event) {
   var $characters = document.querySelectorAll('span.letter');
-  if ($characters.length !== currentCharacter + 1) {
+  if ($characters.length !== currentCharacter + 1 && event.target !== document.querySelector('input')) {
     if (event.key === $characters[currentCharacter].textContent) {
       $characters[currentCharacter].classList.toggle('correct');
       $characters[currentCharacter].classList.toggle('current-character');

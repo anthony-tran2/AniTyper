@@ -5,6 +5,22 @@ var seconds = null;
 var intervalId = null;
 var $stats = document.querySelector('div.stats');
 
+function animeSelection(event) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    var animes = xhr.response.sort();
+    var $datalist = document.querySelector('#anime');
+    for (var animesIndex = 0; animesIndex < animes.length; animesIndex++) {
+      var $option = document.createElement('option');
+      $option.setAttribute('value', animes[animesIndex]);
+      $datalist.appendChild($option);
+    }
+  });
+  xhr.send();
+}
+
 function gameLoading(event) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://animechan.vercel.app/api/random');
@@ -38,6 +54,7 @@ function gameLoading(event) {
   xhr.send();
 }
 
+animeSelection();
 gameLoading();
 
 function timer() {

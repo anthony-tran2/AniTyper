@@ -1,8 +1,7 @@
 /* exported data */
 
 var data = {
-  view: 'typing-game',
-  selectedAnime: ''
+  view: 'typing-game'
 };
 
 var previousDataJSON = localStorage.getItem('typing-game-local-storage');

@@ -20,7 +20,15 @@
   </header>
   <main>
     <div data-view="typing-game" class="container">
-      <div class="row stats margin-bottom-stats font-size-36px justify-center hidden">
+      <div class="row margin-top-selection margin-bottom-selection">
+        <form>
+          <input required class="font-size-18px margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
+          <datalist id="anime">
+          </datalist>
+          <button type="submit" class="font-size-18px">Select</button>
+        </form>
+      </div>
+      <div class="row active stats margin-bottom-stats font-size-36px justify-center hidden">
         <div class="column-quarter text-align-center">
           <p class="text-underline font-size-36px margin-block-0">Accuracy</p>
           <p class="statStyling font-size-36px margin-block-0 accuracy"></p>

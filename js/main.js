@@ -1,44 +1,84 @@
 var $p = document.querySelector('p.inactive');
 var $webPage = document.querySelector('body');
+var $stats = document.querySelector('div.stats');
+var $form = document.querySelector('form');
+var $input = document.querySelector('input[list]');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
-var $stats = document.querySelector('div.stats');
+
+function animeSelection(event) {
+  if (data.animeAvailable === null) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function () {
+      data.animeAvailable = xhr.response.sort();
+    });
+    xhr.send();
+  }
+  var $datalist = document.querySelector('#anime');
+  for (var animesIndex = 0; animesIndex < data.animeAvailable.length; animesIndex++) {
+    var $option = document.createElement('option');
+    $option.setAttribute('value', data.animeAvailable[animesIndex]);
+    $datalist.appendChild($option);
+  }
+}
+
+function createQuote(words) {
+  for (var i = 0; i < words.length; i++) {
+    var $newWord = document.createElement('span');
+    $newWord.className = 'word';
+    for (var letterIndex = 0; letterIndex < words[i].length; letterIndex++) {
+      var $letter = document.createElement('span');
+      $letter.className = 'letter';
+      $letter.textContent = words[i][letterIndex];
+      $newWord.appendChild($letter);
+    }
+    var $space = document.createElement('span');
+    $space.className = 'letter';
+    $space.textContent = ' ';
+    $p.appendChild($newWord);
+    $p.appendChild($space);
+  }
+  var $firstWord = document.querySelector('span.word');
+  $firstWord.classList.toggle('active');
+  var $firstCharacter = $firstWord.querySelector('span.letter');
+  $firstCharacter.classList.toggle('current-character');
+}
 
 function gameLoading(event) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://animechan.vercel.app/api/random');
   xhr.responseType = 'json';
-  xhr.addEventListener('load', function () {
+  xhr.addEventListener('load', function (event) {
     var $anime = document.querySelector('h3.anime');
     var $character = document.querySelector('h3.character');
     $anime.textContent = `Anime: ${xhr.response.anime}`;
     $character.textContent = `Character: ${xhr.response.character}`;
     var wordList = xhr.response.quote.split(' ');
-    for (var i = 0; i < wordList.length; i++) {
-      var $newWord = document.createElement('span');
-      $newWord.className = 'word';
-      for (var letterIndex = 0; letterIndex < wordList[i].length; letterIndex++) {
-        var $letter = document.createElement('span');
-        $letter.className = 'letter';
-        $letter.textContent = wordList[i][letterIndex];
-        $newWord.appendChild($letter);
-      }
-      var $space = document.createElement('span');
-      $space.className = 'letter';
-      $space.textContent = ' ';
-      $p.appendChild($newWord);
-      $p.appendChild($space);
-    }
-    var $firstWord = document.querySelector('span.word');
-    $firstWord.classList.toggle('active');
-    var $firstCharacter = $firstWord.querySelector('span.letter');
-    $firstCharacter.classList.toggle('current-character');
+    createQuote(wordList);
   });
   xhr.send();
+  // var $anime = document.querySelector('h3.anime');
+  // var $character = document.querySelector('h3.character');
+  // $anime.textContent = `Anime: ${quoteData.anime}`;
+  // $character.textContent = `Character: ${quoteData.character}`;
+  // var wordList = quoteData.quote.split(' ');
+  // createQuote(wordList);
 }
 
+animeSelection();
 gameLoading();
+
+function clearPage() {
+  $p.textContent = '';
+  currentCharacter = 0;
+  clearInterval(intervalId);
+  seconds = null;
+  intervalId = null;
+  $stats.className = 'row stats margin-bottom-stats font-size-36px justify-center hidden';
+}
 
 function timer() {
   var $characters = document.querySelectorAll('span.letter');
@@ -59,7 +99,7 @@ function timer() {
 
 $webPage.addEventListener('keydown', function (event) {
   var $characters = document.querySelectorAll('span.letter');
-  if ($characters.length !== currentCharacter + 1) {
+  if ($characters.length !== currentCharacter + 1 && event.target !== $input) {
     if (event.key === $characters[currentCharacter].textContent) {
       $characters[currentCharacter].classList.toggle('correct');
       $characters[currentCharacter].classList.toggle('current-character');
@@ -84,12 +124,7 @@ $webPage.addEventListener('keydown', function (event) {
     }
   }
   if (event.key === 'Tab') {
-    $p.textContent = '';
-    currentCharacter = 0;
-    clearInterval(intervalId);
-    seconds = null;
-    intervalId = null;
-    $stats.className = 'row stats margin-bottom-stats font-size-36px justify-center hidden';
+    clearPage();
     gameLoading();
   }
   if (event.key === ' ' && event.target === document.body) {
@@ -100,4 +135,27 @@ $webPage.addEventListener('keydown', function (event) {
   if (currentCharacter === 1) {
     intervalId = setInterval(timer, 1000);
   }
+});
+
+$form.addEventListener('submit', function (event) {
+  event.preventDefault();
+  if ($input.value !== '') {
+    clearPage();
+    var xhr = new XMLHttpRequest();
+    var selectedAnime = $input.value;
+    xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function (event) {
+      var selectedQuoteList = xhr.response.length;
+      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
+      var $anime = document.querySelector('h3.anime');
+      var $character = document.querySelector('h3.character');
+      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
+      $character.textContent = `Character: ${randomSelectedQuote.character}`;
+      var wordList = randomSelectedQuote.quote.split(' ');
+      createQuote(wordList);
+    });
+    xhr.send();
+  }
+  $input.value = '';
 });

@@ -17,7 +17,7 @@
 }
 
 .column-half {
-  flex-basis: 50%;
+  flex-basis: 100%;
 }
 
 .column-quarter {
@@ -27,5 +27,9 @@
 @media screen and (min-width: 1152px) {
   .container {
     padding-inline: 3rem;
+  }
+
+  .column-half {
+    flex-basis: 50%;
   }
 }

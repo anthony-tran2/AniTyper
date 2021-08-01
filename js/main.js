@@ -1,8 +1,9 @@
-var $p = document.querySelector('p.inactive');
+var $p = document.querySelector('p.quote');
 var $webPage = document.querySelector('body');
 var $stats = document.querySelector('div.stats');
 var $form = document.querySelector('form');
 var $input = document.querySelector('input[list]');
+var $animeInfoButton = document.querySelector('button.info');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -63,9 +64,9 @@ function gameLoading(event) {
   // xhr.send();
   var $anime = document.querySelector('h3.anime');
   var $character = document.querySelector('h3.character');
-  $anime.textContent = `Anime: ${quoteData.anime}`;
-  $character.textContent = `Character: ${quoteData.character}`;
-  var wordList = quoteData.quote.split(' ');
+  $anime.textContent = `Anime: ${quoteTemp.anime}`;
+  $character.textContent = `Character: ${quoteTemp.character}`;
+  var wordList = quoteTemp.quote.split(' ');
   createQuote(wordList);
 }
 
@@ -159,4 +160,9 @@ $form.addEventListener('submit', function (event) {
   //   xhr.send();
   // }
   $input.value = '';
+});
+
+$animeInfoButton.addEventListener('click', function () {
+  document.querySelector('div[data-view="anime-info"]').classList.toggle('hidden');
+  document.querySelector('div[data-view="typing-game"]').classList.toggle('hidden');
 });

@@ -187,8 +187,9 @@ button[type="button"].info {
 
   img {
     object-fit: cover;
-    width: 225px;
-    height: 320px;
+    width: 450px;
+    height: 640px;
+    margin-block: 72px;
   }
 
   button[type="submit"] {
@@ -239,5 +240,25 @@ button[type="button"].info {
     background-color: hsla(183, 100%, 35%, 0.72);
     border-radius: 6px;
     display: inline;
+  }
+
+  .back-to-game {
+    width: 534px;
+    height: 112px;
+    margin-top: 2rem;
+    font-size: 68px;
+  }
+
+  .left-info {
+    flex-basis: 536px;
+  }
+
+  .right-info {
+    flex-basis: 960px;
+  }
+
+  div[data-view="anime-info"] > div.row {
+    justify-content: center;
+    align-items: center;
   }
 }

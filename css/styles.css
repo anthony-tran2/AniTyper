@@ -121,7 +121,7 @@ button[type="button"].info {
   text-align: center;
 }
 
-.statStyling {
+.stat-styling {
   background-color: hsla(183, 100%, 35%, 0.72);
   border-radius: 6px;
   display: inline;
@@ -236,7 +236,7 @@ button[type="button"].info {
     margin-bottom: 0.5rem;
   }
 
-  .statStyling {
+  .stat-styling {
     background-color: hsla(183, 100%, 35%, 0.72);
     border-radius: 6px;
     display: inline;

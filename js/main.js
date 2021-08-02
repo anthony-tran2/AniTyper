@@ -44,15 +44,25 @@ function createQuote(words) {
       $newWord.appendChild($letter);
     }
     var $space = document.createElement('span');
-    $space.className = 'letter space';
+    $space.className = 'letter';
     $space.textContent = ' ';
     $p.appendChild($newWord);
     $p.appendChild($space);
   }
-  var $firstWord = document.querySelector('span.word');
-  $firstWord.classList.toggle('active');
-  var $firstCharacter = $firstWord.querySelector('span.letter');
-  $firstCharacter.classList.toggle('current-character');
+  if (data.view === 'anime-info' && document.querySelectorAll('span.letter').length === data.previousCharacterClassesCounter) {
+    $stats.classList.toggle('hidden');
+    document.querySelector('p.accuracy').textContent = data.previousAccuracy;
+    document.querySelector('p.wpm').textContent = data.previousWPM;
+    var $characters = document.querySelectorAll('span.letter');
+    for (var c = 0; c < $characters.length; c++) {
+      $characters[c].className = data.previousCharacterClasses[c];
+    }
+  } else {
+    var $firstWord = document.querySelector('span.word');
+    $firstWord.classList.toggle('active');
+    var $firstCharacter = $firstWord.querySelector('span.letter');
+    $firstCharacter.classList.toggle('current-character');
+  }
 }
 
 function gameLoading(event) {
@@ -80,8 +90,8 @@ function gameLoading(event) {
     $infoSynopsis.textContent = data.animeInfo.synopsis;
     var $anime = document.querySelector('h3.anime');
     var $character = document.querySelector('h3.character');
-    $anime.textContent = data.quoteData.anime;
-    $character.textContent = data.quoteData.character;
+    $anime.textContent = 'Anime: ' + data.quoteData.anime;
+    $character.textContent = 'Character: ' + data.quoteData.character;
     var wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
   }
@@ -189,6 +199,17 @@ $form.addEventListener('submit', function (event) {
 });
 
 $animeInfoButton.addEventListener('click', function () {
+  data.previousCharacterClassesCounter = 0;
+  data.previousCharacterClasses = [];
+  var $characters = document.querySelectorAll('span.letter');
+  for (var i = 0; i < $characters.length; i++) {
+    if ($characters[i].className !== 'letter') {
+      data.previousCharacterClasses.push($characters[i].className);
+      data.previousCharacterClassesCounter++;
+    }
+  }
+  data.previousAccuracy = document.querySelector('p.accuracy').textContent;
+  data.previousWPM = document.querySelector('p.wpm').textContent;
   $viewInfo.classList.toggle('hidden');
   $viewTyping.classList.toggle('hidden');
   data.view = 'anime-info';
@@ -203,6 +224,10 @@ $animeInfoButton.addEventListener('click', function () {
         data.animeInfo.imgURL = xhr.response.results[i].image_url;
         data.animeInfo.synopsis = xhr.response.results[i].synopsis;
         break;
+      } else {
+        data.animeInfo.title = xhr.response.results[0].title;
+        data.animeInfo.imgURL = xhr.response.results[0].image_url;
+        data.animeInfo.synopsis = xhr.response.results[0].synopsis;
       }
     }
     $infoTitle.textContent = data.animeInfo.title;

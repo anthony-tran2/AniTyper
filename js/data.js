@@ -13,8 +13,8 @@ var data = {
     imgURL: null,
     synopsis: null
   },
-  previousWords: null,
-  previousSpaces: null,
+  previousCharacterClasses: [],
+  previousCharacterClassesCounter: 0,
   previousAccuracy: null,
   previousWPM: null
 };
@@ -42,6 +42,10 @@ function storeData(event) {
     data.animeInfo.title = null;
     data.animeInfo.imgURL = null;
     data.animeInfo.title = null;
+    data.previousWords = null;
+    data.previousSpaces = null;
+    data.previousAccuracy = null;
+    data.previousWPM = null;
   }
   var dataJSON = JSON.stringify(data);
   localStorage.setItem('typing-game-local-storage', dataJSON);

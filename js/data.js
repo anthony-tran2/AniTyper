@@ -19,12 +19,6 @@ var data = {
   previousWPM: null
 };
 
-// var quoteTemp = {
-//   anime: 'Junjou Romantica',
-//   character: 'Akihiko Usami',
-//   quote: 'When you fight hard and fail, the regret is easier to get past than the regret of not trying.'
-// };
-
 var previousDataJSON = localStorage.getItem('typing-game-local-storage');
 if (previousDataJSON !== null) {
   var oldData = JSON.parse(previousDataJSON);

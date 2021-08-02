@@ -95,12 +95,6 @@ function gameLoading(event) {
     var wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
   }
-  // var $anime = document.querySelector('h3.anime');
-  // var $character = document.querySelector('h3.character');
-  // $anime.textContent = `Anime: ${quoteTemp.anime}`;
-  // $character.textContent = `Character: ${quoteTemp.character}`;
-  // var wordList = quoteTemp.quote.split(' ');
-  // createQuote(wordList);
 }
 
 animeSelection();

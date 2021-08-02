@@ -1,24 +1,32 @@
-var $p = document.querySelector('p.inactive');
+var $p = document.querySelector('p.quote');
 var $webPage = document.querySelector('body');
 var $stats = document.querySelector('div.stats');
 var $form = document.querySelector('form');
 var $input = document.querySelector('input[list]');
+var $animeInfoButton = document.querySelector('button.info');
+var $backToGameButton = document.querySelector('button.back-to-game');
+var $viewTyping = document.querySelector('div[data-view="anime-info"]');
+var $viewInfo = document.querySelector('div[data-view="typing-game"]');
+var $infoTitle = document.querySelector('p.font-weight-500');
+var $infoImg = document.querySelector('img');
+var $infoSynopsis = document.querySelector('p.synopsis');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
 
-function animeSelection(event) {
-  if (data.animeAvailable === null) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function () {
-      data.animeAvailable = xhr.response.sort();
-    });
-    xhr.send();
-  }
+if (data.animeAvailable === null) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    data.animeAvailable = xhr.response.sort();
+  });
+  xhr.send();
+}
+
+function animeSelection() {
   var $datalist = document.querySelector('#anime');
-  for (var animesIndex = 0; animesIndex < data.animeAvailable.length; animesIndex++) {
+  for (var animesIndex = 1; animesIndex < data.animeAvailable.length; animesIndex++) {
     var $option = document.createElement('option');
     $option.setAttribute('value', data.animeAvailable[animesIndex]);
     $datalist.appendChild($option);
@@ -41,31 +49,52 @@ function createQuote(words) {
     $p.appendChild($newWord);
     $p.appendChild($space);
   }
-  var $firstWord = document.querySelector('span.word');
-  $firstWord.classList.toggle('active');
-  var $firstCharacter = $firstWord.querySelector('span.letter');
-  $firstCharacter.classList.toggle('current-character');
+  if (data.view === 'anime-info' && document.querySelectorAll('span.letter').length === data.previousCharacterClassesCounter) {
+    $stats.classList.toggle('hidden');
+    document.querySelector('p.accuracy').textContent = data.previousAccuracy;
+    document.querySelector('p.wpm').textContent = data.previousWPM;
+    var $characters = document.querySelectorAll('span.letter');
+    for (var c = 0; c < $characters.length; c++) {
+      $characters[c].className = data.previousCharacterClasses[c];
+    }
+  } else {
+    var $firstWord = document.querySelector('span.word');
+    $firstWord.classList.toggle('active');
+    var $firstCharacter = $firstWord.querySelector('span.letter');
+    $firstCharacter.classList.toggle('current-character');
+  }
 }
 
 function gameLoading(event) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://animechan.vercel.app/api/random');
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function (event) {
+  if (data.view === 'typing-game') {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://animechan.vercel.app/api/random');
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function (event) {
+      var $anime = document.querySelector('h3.anime');
+      var $character = document.querySelector('h3.character');
+      $anime.textContent = `Anime: ${xhr.response.anime}`;
+      $character.textContent = `Character: ${xhr.response.character}`;
+      var wordList = xhr.response.quote.split(' ');
+      createQuote(wordList);
+      data.quoteData.anime = xhr.response.anime;
+      data.quoteData.character = xhr.response.character;
+      data.quoteData.quote = xhr.response.quote;
+    });
+    xhr.send();
+  } else {
+    $viewInfo.classList.toggle('hidden');
+    $viewTyping.classList.toggle('hidden');
+    $infoTitle.textContent = data.animeInfo.title;
+    $infoImg.setAttribute('src', data.animeInfo.imgURL);
+    $infoSynopsis.textContent = data.animeInfo.synopsis;
     var $anime = document.querySelector('h3.anime');
     var $character = document.querySelector('h3.character');
-    $anime.textContent = `Anime: ${xhr.response.anime}`;
-    $character.textContent = `Character: ${xhr.response.character}`;
-    var wordList = xhr.response.quote.split(' ');
+    $anime.textContent = 'Anime: ' + data.quoteData.anime;
+    $character.textContent = 'Character: ' + data.quoteData.character;
+    var wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
-  });
-  xhr.send();
-  // var $anime = document.querySelector('h3.anime');
-  // var $character = document.querySelector('h3.character');
-  // $anime.textContent = `Anime: ${quoteData.anime}`;
-  // $character.textContent = `Character: ${quoteData.character}`;
-  // var wordList = quoteData.quote.split(' ');
-  // createQuote(wordList);
+  }
 }
 
 animeSelection();
@@ -154,8 +183,56 @@ $form.addEventListener('submit', function (event) {
       $character.textContent = `Character: ${randomSelectedQuote.character}`;
       var wordList = randomSelectedQuote.quote.split(' ');
       createQuote(wordList);
+      data.quoteData.anime = randomSelectedQuote.anime;
+      data.quoteData.character = randomSelectedQuote.character;
+      data.quoteData.quote = randomSelectedQuote.quote;
     });
     xhr.send();
   }
   $input.value = '';
+});
+
+$animeInfoButton.addEventListener('click', function () {
+  data.previousCharacterClassesCounter = 0;
+  data.previousCharacterClasses = [];
+  var $characters = document.querySelectorAll('span.letter');
+  for (var i = 0; i < $characters.length; i++) {
+    if ($characters[i].className !== 'letter') {
+      data.previousCharacterClasses.push($characters[i].className);
+      data.previousCharacterClassesCounter++;
+    }
+  }
+  data.previousAccuracy = document.querySelector('p.accuracy').textContent;
+  data.previousWPM = document.querySelector('p.wpm').textContent;
+  $viewInfo.classList.toggle('hidden');
+  $viewTyping.classList.toggle('hidden');
+  data.view = 'anime-info';
+  var anime = data.quoteData.anime;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', `https://api.jikan.moe/v3/search/anime?q=${encodeURIComponent(anime)}&page=1`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function (event) {
+    for (var i = 0; i < xhr.response.results.length; i++) {
+      if (xhr.response.results[i].title === anime) {
+        data.animeInfo.title = xhr.response.results[i].title;
+        data.animeInfo.imgURL = xhr.response.results[i].image_url;
+        data.animeInfo.synopsis = xhr.response.results[i].synopsis;
+        break;
+      } else {
+        data.animeInfo.title = xhr.response.results[0].title;
+        data.animeInfo.imgURL = xhr.response.results[0].image_url;
+        data.animeInfo.synopsis = xhr.response.results[0].synopsis;
+      }
+    }
+    $infoTitle.textContent = data.animeInfo.title;
+    $infoImg.setAttribute('src', data.animeInfo.imgURL);
+    $infoSynopsis.textContent = data.animeInfo.synopsis;
+  });
+  xhr.send();
+});
+
+$backToGameButton.addEventListener('click', function () {
+  $viewInfo.classList.toggle('hidden');
+  $viewTyping.classList.toggle('hidden');
+  data.view = 'typing-game';
 });

@@ -17,7 +17,7 @@
 }
 
 .column-half {
-  flex-basis: 50%;
+  flex-basis: 100%;
 }
 
 .column-quarter {

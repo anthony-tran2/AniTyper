@@ -1,8 +1,10 @@
 var $p = document.querySelector('p.quote');
 var $webPage = document.querySelector('body');
 var $stats = document.querySelector('div.stats');
-var $form = document.querySelector('form');
-var $input = document.querySelector('input[list]');
+var $firstForm = document.querySelector('form');
+var $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
+var $firstInput = document.querySelector('input[list]');
+var $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
 var $animeInfoButton = document.querySelector('button.info');
 var $backToGameButton = document.querySelector('button.back-to-game');
 var $viewInfo = document.querySelector('div[data-view="anime-info"]');
@@ -11,6 +13,7 @@ var $infoTitle = document.querySelector('p.font-weight-500');
 var $infoImg = document.querySelector('img');
 var $infoSynopsis = document.querySelector('p.synopsis');
 var $loader = document.querySelector('div.loader').closest('div.row');
+var $error = document.querySelector('div.error');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -131,7 +134,7 @@ function timer() {
 
 $webPage.addEventListener('keydown', function (event) {
   var $characters = document.querySelectorAll('span.letter');
-  if ($characters.length !== currentCharacter + 1 && event.target !== $input) {
+  if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput) {
     if (event.key === $characters[currentCharacter].textContent) {
       $characters[currentCharacter].classList.toggle('correct');
       $characters[currentCharacter].classList.toggle('current-character');
@@ -173,17 +176,20 @@ $webPage.addEventListener('keydown', function (event) {
   }
 });
 
-$form.addEventListener('submit', function (event) {
+$secondForm.addEventListener('submit', function (event) {
   event.preventDefault();
   $viewTyping.classList.toggle('hidden');
   $loader.classList.toggle('hidden');
-  if ($input.value !== '') {
-    clearPage();
-    var xhr = new XMLHttpRequest();
-    var selectedAnime = $input.value;
-    xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function (event) {
+  clearPage();
+  var xhr = new XMLHttpRequest();
+  var selectedAnime = $secondInput.value;
+  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function (event) {
+    if (xhr.response.error === 'No related quotes found!') {
+      $loader.classList.toggle('hidden');
+      $error.classList.toggle('hidden');
+    } else {
       var selectedQuoteList = xhr.response.length;
       var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
       var $anime = document.querySelector('h3.anime');
@@ -197,10 +203,44 @@ $form.addEventListener('submit', function (event) {
       data.quoteData.quote = randomSelectedQuote.quote;
       $viewTyping.classList.toggle('hidden');
       $loader.classList.toggle('hidden');
-    });
-    xhr.send();
-  }
-  $input.value = '';
+    }
+  });
+  xhr.send();
+  $secondInput.value = '';
+});
+
+$firstForm.addEventListener('submit', function (event) {
+  $loader.classList.toggle('hidden');
+  $error.classList.toggle('hidden');
+  event.preventDefault();
+  clearPage();
+  var xhr = new XMLHttpRequest();
+  var selectedAnime = $firstInput.value;
+  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function (event) {
+    if (xhr.response.error === 'No related quotes found!') {
+      $loader.classList.toggle('hidden');
+      $error.classList.toggle('hidden');
+      $firstInput.value = '';
+    } else {
+      var selectedQuoteList = xhr.response.length;
+      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
+      var $anime = document.querySelector('h3.anime');
+      var $character = document.querySelector('h3.character');
+      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
+      $character.textContent = `Character: ${randomSelectedQuote.character}`;
+      var wordList = randomSelectedQuote.quote.split(' ');
+      createQuote(wordList);
+      data.quoteData.anime = randomSelectedQuote.anime;
+      data.quoteData.character = randomSelectedQuote.character;
+      data.quoteData.quote = randomSelectedQuote.quote;
+      $viewTyping.classList.toggle('hidden');
+      $loader.classList.toggle('hidden');
+    }
+  });
+  xhr.send();
+  $firstInput.value = '';
 });
 
 $animeInfoButton.addEventListener('click', function () {

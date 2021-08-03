@@ -5,11 +5,12 @@ var $form = document.querySelector('form');
 var $input = document.querySelector('input[list]');
 var $animeInfoButton = document.querySelector('button.info');
 var $backToGameButton = document.querySelector('button.back-to-game');
-var $viewTyping = document.querySelector('div[data-view="anime-info"]');
-var $viewInfo = document.querySelector('div[data-view="typing-game"]');
+var $viewInfo = document.querySelector('div[data-view="anime-info"]');
+var $viewTyping = document.querySelector('div[data-view="typing-game"]');
 var $infoTitle = document.querySelector('p.font-weight-500');
 var $infoImg = document.querySelector('img');
 var $infoSynopsis = document.querySelector('p.synopsis');
+var $loader = document.querySelector('div.loader').closest('div.row');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -80,11 +81,11 @@ function gameLoading(event) {
       data.quoteData.anime = xhr.response.anime;
       data.quoteData.character = xhr.response.character;
       data.quoteData.quote = xhr.response.quote;
+      $viewTyping.classList.toggle('hidden');
+      $loader.classList.toggle('hidden');
     });
     xhr.send();
   } else {
-    $viewInfo.classList.toggle('hidden');
-    $viewTyping.classList.toggle('hidden');
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
@@ -94,6 +95,8 @@ function gameLoading(event) {
     $character.textContent = 'Character: ' + data.quoteData.character;
     var wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
+    $viewInfo.classList.toggle('hidden');
+    $loader.classList.toggle('hidden');
   }
 }
 
@@ -154,6 +157,10 @@ $webPage.addEventListener('keydown', function (event) {
   }
   if (event.key === 'Tab') {
     clearPage();
+    $loader.className = 'row justify-center margin-top-selection';
+    $viewTyping.className = 'container hidden';
+    $viewInfo.className = 'container hidden';
+    data.view = 'typing-game';
     gameLoading();
   }
   if (event.key === ' ' && event.target === document.body) {
@@ -168,6 +175,8 @@ $webPage.addEventListener('keydown', function (event) {
 
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
+  $viewTyping.classList.toggle('hidden');
+  $loader.classList.toggle('hidden');
   if ($input.value !== '') {
     clearPage();
     var xhr = new XMLHttpRequest();
@@ -186,6 +195,8 @@ $form.addEventListener('submit', function (event) {
       data.quoteData.anime = randomSelectedQuote.anime;
       data.quoteData.character = randomSelectedQuote.character;
       data.quoteData.quote = randomSelectedQuote.quote;
+      $viewTyping.classList.toggle('hidden');
+      $loader.classList.toggle('hidden');
     });
     xhr.send();
   }
@@ -193,6 +204,8 @@ $form.addEventListener('submit', function (event) {
 });
 
 $animeInfoButton.addEventListener('click', function () {
+  $viewTyping.classList.toggle('hidden');
+  $loader.classList.toggle('hidden');
   data.previousCharacterClassesCounter = 0;
   data.previousCharacterClasses = [];
   var $characters = document.querySelectorAll('span.letter');
@@ -204,8 +217,6 @@ $animeInfoButton.addEventListener('click', function () {
   }
   data.previousAccuracy = document.querySelector('p.accuracy').textContent;
   data.previousWPM = document.querySelector('p.wpm').textContent;
-  $viewInfo.classList.toggle('hidden');
-  $viewTyping.classList.toggle('hidden');
   data.view = 'anime-info';
   var anime = data.quoteData.anime;
   var xhr = new XMLHttpRequest();
@@ -227,6 +238,8 @@ $animeInfoButton.addEventListener('click', function () {
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
+    $viewInfo.classList.toggle('hidden');
+    $loader.classList.toggle('hidden');
   });
   xhr.send();
 });

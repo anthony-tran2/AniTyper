@@ -27,6 +27,7 @@ img {
 
 button:hover {
   cursor: pointer;
+  background-color: hsla(205, 91%, 40%, 0.72);
 }
 
 button[type="submit"] {

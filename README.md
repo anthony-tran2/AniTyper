@@ -1,3 +1,3 @@
-# ajax-project
+# AniTyper
 
-A dynamic HTML, CSS, and JavaScript solo project.
+A web application for anime fans who want to practice typing.

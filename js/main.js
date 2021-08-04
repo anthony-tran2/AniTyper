@@ -1,15 +1,20 @@
 var $p = document.querySelector('p.quote');
 var $webPage = document.querySelector('body');
 var $stats = document.querySelector('div.stats');
-var $form = document.querySelector('form');
-var $input = document.querySelector('input[list]');
+var $firstForm = document.querySelector('form');
+var $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
+var $firstInput = document.querySelector('input[list]');
+var $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
 var $animeInfoButton = document.querySelector('button.info');
 var $backToGameButton = document.querySelector('button.back-to-game');
-var $viewTyping = document.querySelector('div[data-view="anime-info"]');
-var $viewInfo = document.querySelector('div[data-view="typing-game"]');
+var $viewInfo = document.querySelector('div[data-view="anime-info"]');
+var $viewTyping = document.querySelector('div[data-view="typing-game"]');
 var $infoTitle = document.querySelector('p.font-weight-500');
 var $infoImg = document.querySelector('img');
 var $infoSynopsis = document.querySelector('p.synopsis');
+var $loader = document.querySelector('div.loader').closest('div.row');
+var $error = document.querySelector('div.error');
+var $networkError = document.querySelector('div.network-error');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -80,11 +85,11 @@ function gameLoading(event) {
       data.quoteData.anime = xhr.response.anime;
       data.quoteData.character = xhr.response.character;
       data.quoteData.quote = xhr.response.quote;
+      $viewTyping.classList.toggle('hidden');
+
     });
     xhr.send();
   } else {
-    $viewInfo.classList.toggle('hidden');
-    $viewTyping.classList.toggle('hidden');
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
@@ -94,11 +99,10 @@ function gameLoading(event) {
     $character.textContent = 'Character: ' + data.quoteData.character;
     var wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
+    $viewInfo.classList.toggle('hidden');
   }
+  $loader.classList.toggle('hidden');
 }
-
-animeSelection();
-gameLoading();
 
 function clearPage() {
   $p.textContent = '';
@@ -126,9 +130,32 @@ function timer() {
   }
 }
 
+window.addEventListener('load', function (event) {
+  function updateOnlineStatus(event) {
+    if (navigator.onLine === true) {
+      $loader.className = 'row justify-center margin-top-selection';
+      $networkError.className = 'row justify-center network-error hidden';
+      animeSelection();
+      gameLoading();
+    } else {
+      $loader.className = 'row justify-center margin-top-selection hidden';
+      $viewTyping.className = 'container hidden';
+      $viewInfo.className = 'container hidden';
+      $error.className = 'container error hidden';
+      $networkError.classList.toggle('hidden');
+    }
+  }
+
+  updateOnlineStatus();
+
+  window.addEventListener('online', updateOnlineStatus);
+
+  window.addEventListener('offline', updateOnlineStatus);
+});
+
 $webPage.addEventListener('keydown', function (event) {
   var $characters = document.querySelectorAll('span.letter');
-  if ($characters.length !== currentCharacter + 1 && event.target !== $input) {
+  if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput) {
     if (event.key === $characters[currentCharacter].textContent) {
       $characters[currentCharacter].classList.toggle('correct');
       $characters[currentCharacter].classList.toggle('current-character');
@@ -154,6 +181,10 @@ $webPage.addEventListener('keydown', function (event) {
   }
   if (event.key === 'Tab') {
     clearPage();
+    $loader.className = 'row justify-center margin-top-selection';
+    $viewTyping.className = 'container hidden';
+    $viewInfo.className = 'container hidden';
+    data.view = 'typing-game';
     gameLoading();
   }
   if (event.key === ' ' && event.target === document.body) {
@@ -166,15 +197,19 @@ $webPage.addEventListener('keydown', function (event) {
   }
 });
 
-$form.addEventListener('submit', function (event) {
+$secondForm.addEventListener('submit', function (event) {
   event.preventDefault();
-  if ($input.value !== '') {
-    clearPage();
-    var xhr = new XMLHttpRequest();
-    var selectedAnime = $input.value;
-    xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function (event) {
+  $viewTyping.classList.toggle('hidden');
+  $loader.classList.toggle('hidden');
+  clearPage();
+  var xhr = new XMLHttpRequest();
+  var selectedAnime = $secondInput.value;
+  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function (event) {
+    if (xhr.response.error === 'No related quotes found!') {
+      $error.classList.toggle('hidden');
+    } else {
       var selectedQuoteList = xhr.response.length;
       var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
       var $anime = document.querySelector('h3.anime');
@@ -186,13 +221,50 @@ $form.addEventListener('submit', function (event) {
       data.quoteData.anime = randomSelectedQuote.anime;
       data.quoteData.character = randomSelectedQuote.character;
       data.quoteData.quote = randomSelectedQuote.quote;
-    });
-    xhr.send();
-  }
-  $input.value = '';
+      $viewTyping.classList.toggle('hidden');
+    }
+    $loader.classList.toggle('hidden');
+  });
+  xhr.send();
+  $secondInput.value = '';
+});
+
+$firstForm.addEventListener('submit', function (event) {
+  $loader.classList.toggle('hidden');
+  $error.classList.toggle('hidden');
+  event.preventDefault();
+  clearPage();
+  var xhr = new XMLHttpRequest();
+  var selectedAnime = $firstInput.value;
+  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function (event) {
+    if (xhr.response.error === 'No related quotes found!') {
+      $error.classList.toggle('hidden');
+      $firstInput.value = '';
+    } else {
+      var selectedQuoteList = xhr.response.length;
+      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
+      var $anime = document.querySelector('h3.anime');
+      var $character = document.querySelector('h3.character');
+      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
+      $character.textContent = `Character: ${randomSelectedQuote.character}`;
+      var wordList = randomSelectedQuote.quote.split(' ');
+      createQuote(wordList);
+      data.quoteData.anime = randomSelectedQuote.anime;
+      data.quoteData.character = randomSelectedQuote.character;
+      data.quoteData.quote = randomSelectedQuote.quote;
+      $viewTyping.classList.toggle('hidden');
+    }
+    $loader.classList.toggle('hidden');
+  });
+  xhr.send();
+  $firstInput.value = '';
 });
 
 $animeInfoButton.addEventListener('click', function () {
+  $viewTyping.classList.toggle('hidden');
+  $loader.classList.toggle('hidden');
   data.previousCharacterClassesCounter = 0;
   data.previousCharacterClasses = [];
   var $characters = document.querySelectorAll('span.letter');
@@ -204,8 +276,6 @@ $animeInfoButton.addEventListener('click', function () {
   }
   data.previousAccuracy = document.querySelector('p.accuracy').textContent;
   data.previousWPM = document.querySelector('p.wpm').textContent;
-  $viewInfo.classList.toggle('hidden');
-  $viewTyping.classList.toggle('hidden');
   data.view = 'anime-info';
   var anime = data.quoteData.anime;
   var xhr = new XMLHttpRequest();
@@ -227,6 +297,8 @@ $animeInfoButton.addEventListener('click', function () {
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
+    $viewInfo.classList.toggle('hidden');
+    $loader.classList.toggle('hidden');
   });
   xhr.send();
 });

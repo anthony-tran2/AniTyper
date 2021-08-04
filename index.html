@@ -19,7 +19,24 @@
     </div>
   </header>
   <main>
-    <div data-view="typing-game" class="container">
+    <div class="row justify-center network-error hidden">
+      <h3 class="text-align-center">Sorry, there was an error connecting to the network! Please check your internet connection.</h3>
+    </div>
+    <div class="row justify-center margin-top-selection">
+      <div class="loader"></div>
+    </div>
+    <div class="container error hidden">
+      <div class="row margin-top-selection">
+        <form>
+          <input required class="font-size-18px margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
+          <button type="submit" class="font-size-18px">Select</button>
+        </form>
+      </div>
+      <div class="row justify-center">
+        <h3 class="text-align-center">No related quotes found! Try reloading the page or searching again.</h3>
+      </div>
+    </div>
+    <div data-view="typing-game" class="container hidden">
       <div class="row margin-top-selection margin-bottom-selection">
         <form>
           <input required class="font-size-18px margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">

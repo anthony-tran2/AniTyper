@@ -14,6 +14,7 @@ var $infoImg = document.querySelector('img');
 var $infoSynopsis = document.querySelector('p.synopsis');
 var $loader = document.querySelector('div.loader').closest('div.row');
 var $error = document.querySelector('div.error');
+var $networkError = document.querySelector('div.network-error');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -103,9 +104,6 @@ function gameLoading(event) {
   }
 }
 
-animeSelection();
-gameLoading();
-
 function clearPage() {
   $p.textContent = '';
   currentCharacter = 0;
@@ -131,6 +129,29 @@ function timer() {
     $wpm.textContent = `${Math.round(grossWPM)}`;
   }
 }
+
+window.addEventListener('load', function (event) {
+  function updateOnlineStatus(event) {
+    if (navigator.onLine === true) {
+      $loader.className = 'row justify-center margin-top-selection';
+      $networkError.className = 'row justify-center network-error hidden';
+      animeSelection();
+      gameLoading();
+    } else {
+      $loader.className = 'row justify-center margin-top-selection hidden';
+      $viewTyping.className = 'container hidden';
+      $viewInfo.className = 'container hidden';
+      $error.className = 'container error hidden';
+      $networkError.classList.toggle('hidden');
+    }
+  }
+
+  updateOnlineStatus();
+
+  window.addEventListener('online', updateOnlineStatus);
+
+  window.addEventListener('offline', updateOnlineStatus);
+});
 
 $webPage.addEventListener('keydown', function (event) {
   var $characters = document.querySelectorAll('span.letter');

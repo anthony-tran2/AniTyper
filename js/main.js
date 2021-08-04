@@ -86,7 +86,7 @@ function gameLoading(event) {
       data.quoteData.character = xhr.response.character;
       data.quoteData.quote = xhr.response.quote;
       $viewTyping.classList.toggle('hidden');
-      $loader.classList.toggle('hidden');
+
     });
     xhr.send();
   } else {
@@ -100,8 +100,8 @@ function gameLoading(event) {
     var wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
     $viewInfo.classList.toggle('hidden');
-    $loader.classList.toggle('hidden');
   }
+  $loader.classList.toggle('hidden');
 }
 
 function clearPage() {
@@ -208,7 +208,6 @@ $secondForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function (event) {
     if (xhr.response.error === 'No related quotes found!') {
-      $loader.classList.toggle('hidden');
       $error.classList.toggle('hidden');
     } else {
       var selectedQuoteList = xhr.response.length;
@@ -223,8 +222,8 @@ $secondForm.addEventListener('submit', function (event) {
       data.quoteData.character = randomSelectedQuote.character;
       data.quoteData.quote = randomSelectedQuote.quote;
       $viewTyping.classList.toggle('hidden');
-      $loader.classList.toggle('hidden');
     }
+    $loader.classList.toggle('hidden');
   });
   xhr.send();
   $secondInput.value = '';
@@ -241,7 +240,6 @@ $firstForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function (event) {
     if (xhr.response.error === 'No related quotes found!') {
-      $loader.classList.toggle('hidden');
       $error.classList.toggle('hidden');
       $firstInput.value = '';
     } else {
@@ -257,8 +255,8 @@ $firstForm.addEventListener('submit', function (event) {
       data.quoteData.character = randomSelectedQuote.character;
       data.quoteData.quote = randomSelectedQuote.quote;
       $viewTyping.classList.toggle('hidden');
-      $loader.classList.toggle('hidden');
     }
+    $loader.classList.toggle('hidden');
   });
   xhr.send();
   $firstInput.value = '';

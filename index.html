@@ -20,6 +20,19 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <div class="modal-row tint position-fixed justify-center align-center hidden">
+    <form>
+      <fieldset class="welcome-modal">
+          <h3 class="text-align-center padding-20px">Welcome to AniTyper!</h3>
+        <p>AniTyper is a typing game for all anime watchers or even non-watchers! Here you can practice your typing skills
+           and get a brief summary about the current anime that your quote is from if it interests you!
+        </p>
+        <div class="text-align-center">
+          <button type="button" class="modal-button font-size-18px">Got it!</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
   <header class="background-color-gray">
     <div class="container">
       <h1 class="margin-block-0 logo-color">AniTyper</h1>
@@ -62,14 +75,17 @@
           <p class="stat-styling font-size-36px margin-block-0 wpm"></p>
         </div>
       </div>
-      <div class="row">
-        <h3 class="margin-top-0 margin-bottom-2rem anime"></h3>
+      <div class="row margin-top-half-rem">
+        <button type="button" class="font-size-18px clear-selected hidden">Clear Selection</button>
       </div>
       <div class="row">
-        <h3 class="margin-top-0 character"></h3>
+        <h3 class="margin-top-0 margin-bottom-half-rem anime"></h3>
       </div>
       <div class="row">
-        <p class="inactive quote"></p>
+        <h3 class="margin-top-0 character margin-bottom-half-rem"></h3>
+      </div>
+      <div class="row">
+        <p class="inactive quote margin-top-0"></p>
       </div>
       <div class="row justify-center">
         <p class="inactive font-size-14px"><span class="tab active">tab</span> - restart game</p>
@@ -80,9 +96,9 @@
     </div>
     <div data-view="anime-info" class="container hidden">
       <div class="row justify-center">
-        <div class=" left-info">
+        <div class="left-info">
           <div class="row justify-center">
-            <button type="button" class="margin-top-left-info font-size-36px font-weight-500 back-to-game">Back to Game</button>
+            <button type="button" class="margin-top-left-info font-weight-500 back-to-game">Back to Game</button>
           </div>
           <div class="row justify-center">
             <img src="images/favicon.ico" alt="anime cover picture">

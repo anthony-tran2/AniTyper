@@ -9,8 +9,7 @@ body {
 
 h1 {
   font-size: 48px;
-  padding-top: 0.5rem;
-  padding-bottom: 2rem;
+  padding: 0.5rem 0;
 }
 
 p {

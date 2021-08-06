@@ -3,7 +3,6 @@ var $webPage = document.querySelector('body');
 var $stats = document.querySelector('div.stats');
 var $firstForm = document.querySelector('form');
 var $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
-var $firstInput = document.querySelector('input[list]');
 var $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
 var $animeInfoButton = document.querySelector('button.info');
 var $backToGameButton = document.querySelector('button.back-to-game');
@@ -14,7 +13,6 @@ var $infoImg = document.querySelector('img');
 var $infoSynopsis = document.querySelector('p.synopsis');
 var $loader = document.querySelector('div.loader').closest('div.row');
 var $error = document.querySelector('div.error');
-var $networkError = document.querySelector('div.network-error');
 var $modalButton = document.querySelector('button.modal-button');
 var $modal = document.querySelector('.modal-row');
 var currentCharacter = 0;
@@ -133,6 +131,7 @@ function timer() {
 }
 
 window.addEventListener('load', function (event) {
+  var $networkError = document.querySelector('div.network-error');
   function updateOnlineStatus(event) {
     if (navigator.onLine === true) {
       $loader.className = 'row justify-center margin-top-selection';
@@ -232,6 +231,7 @@ $secondForm.addEventListener('submit', function (event) {
 });
 
 $firstForm.addEventListener('submit', function (event) {
+  var $firstInput = document.querySelector('input[list]');
   $loader.classList.toggle('hidden');
   $error.classList.toggle('hidden');
   event.preventDefault();

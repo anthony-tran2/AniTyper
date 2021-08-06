@@ -34,4 +34,8 @@
   .container {
     padding-inline: 3rem;
   }
+
+  .column-half {
+    flex-basis: 50%;
+  }
 }

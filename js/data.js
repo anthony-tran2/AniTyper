@@ -4,6 +4,7 @@ var data = {
   view: 'typing-game',
   animeAvailable: null,
   firstTime: true,
+  selectedAnime: null,
   quoteData: {
     anime: null,
     character: null,
@@ -27,6 +28,7 @@ if (previousDataJSON !== null) {
     data.view = oldData.view;
     data.animeAvailable = oldData.animeAvailable;
     data.firstTime = oldData.firstTime;
+    data.selectedAnime = oldData.selectedAnime;
   }
 }
 

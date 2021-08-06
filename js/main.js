@@ -15,6 +15,7 @@ var $loader = document.querySelector('div.loader').closest('div.row');
 var $error = document.querySelector('div.error');
 var $modalButton = document.querySelector('button.modal-button');
 var $modal = document.querySelector('.modal-row');
+var $clearButton = document.querySelector('button.clear-selected');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -130,6 +131,33 @@ function timer() {
   }
 }
 
+function selectedGenration(anime) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(anime)}`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function (event) {
+    if (xhr.response.error === 'No related quotes found!') {
+      $error.classList.toggle('hidden');
+    } else {
+      var selectedQuoteList = xhr.response.length;
+      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
+      var $anime = document.querySelector('h3.anime');
+      var $character = document.querySelector('h3.character');
+      $anime.textContent = `Selected Anime: ${randomSelectedQuote.anime}`;
+      $character.textContent = `Character: ${randomSelectedQuote.character}`;
+      var wordList = randomSelectedQuote.quote.split(' ');
+      createQuote(wordList);
+      data.quoteData.anime = randomSelectedQuote.anime;
+      data.quoteData.character = randomSelectedQuote.character;
+      data.quoteData.quote = randomSelectedQuote.quote;
+      $viewTyping.classList.toggle('hidden');
+    }
+    $loader.classList.toggle('hidden');
+    $clearButton.className = 'font-size-18px clear-selected';
+  });
+  xhr.send();
+}
+
 window.addEventListener('load', function (event) {
   var $networkError = document.querySelector('div.network-error');
   function updateOnlineStatus(event) {
@@ -137,7 +165,11 @@ window.addEventListener('load', function (event) {
       $loader.className = 'row justify-center margin-top-selection';
       $networkError.className = 'row justify-center network-error hidden';
       animeSelection();
-      gameLoading();
+      if (data.selectedAnime === null) {
+        gameLoading();
+      } else {
+        selectedGenration(data.selectedAnime);
+      }
     } else {
       $loader.className = 'row justify-center margin-top-selection hidden';
       $viewTyping.className = 'container hidden';
@@ -186,7 +218,11 @@ $webPage.addEventListener('keydown', function (event) {
     $viewTyping.className = 'container hidden';
     $viewInfo.className = 'container hidden';
     data.view = 'typing-game';
-    gameLoading();
+    if (data.selectedAnime === null) {
+      gameLoading();
+    } else {
+      selectedGenration(data.selectedAnime);
+    }
   }
   if (event.key === ' ' && event.target === document.body) {
     event.preventDefault();
@@ -203,64 +239,21 @@ $secondForm.addEventListener('submit', function (event) {
   $viewTyping.classList.toggle('hidden');
   $loader.classList.toggle('hidden');
   clearPage();
-  var xhr = new XMLHttpRequest();
-  var selectedAnime = $secondInput.value;
-  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function (event) {
-    if (xhr.response.error === 'No related quotes found!') {
-      $error.classList.toggle('hidden');
-    } else {
-      var selectedQuoteList = xhr.response.length;
-      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
-      var $anime = document.querySelector('h3.anime');
-      var $character = document.querySelector('h3.character');
-      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
-      $character.textContent = `Character: ${randomSelectedQuote.character}`;
-      var wordList = randomSelectedQuote.quote.split(' ');
-      createQuote(wordList);
-      data.quoteData.anime = randomSelectedQuote.anime;
-      data.quoteData.character = randomSelectedQuote.character;
-      data.quoteData.quote = randomSelectedQuote.quote;
-      $viewTyping.classList.toggle('hidden');
-    }
-    $loader.classList.toggle('hidden');
-  });
-  xhr.send();
+  var currentSelectedAnime = $secondInput.value;
+  data.selectedAnime = $secondInput.value;
+  selectedGenration(currentSelectedAnime);
   $secondInput.value = '';
 });
 
 $firstForm.addEventListener('submit', function (event) {
   var $firstInput = document.querySelector('input[list]');
+  event.preventDefault();
   $loader.classList.toggle('hidden');
   $error.classList.toggle('hidden');
-  event.preventDefault();
   clearPage();
-  var xhr = new XMLHttpRequest();
-  var selectedAnime = $firstInput.value;
-  xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(selectedAnime)}`);
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function (event) {
-    if (xhr.response.error === 'No related quotes found!') {
-      $error.classList.toggle('hidden');
-      $firstInput.value = '';
-    } else {
-      var selectedQuoteList = xhr.response.length;
-      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
-      var $anime = document.querySelector('h3.anime');
-      var $character = document.querySelector('h3.character');
-      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
-      $character.textContent = `Character: ${randomSelectedQuote.character}`;
-      var wordList = randomSelectedQuote.quote.split(' ');
-      createQuote(wordList);
-      data.quoteData.anime = randomSelectedQuote.anime;
-      data.quoteData.character = randomSelectedQuote.character;
-      data.quoteData.quote = randomSelectedQuote.quote;
-      $viewTyping.classList.toggle('hidden');
-    }
-    $loader.classList.toggle('hidden');
-  });
-  xhr.send();
+  var currentSelectedAnime = $firstInput.value;
+  data.selectedAnime = $firstInput.value;
+  selectedGenration(currentSelectedAnime);
   $firstInput.value = '';
 });
 
@@ -314,4 +307,9 @@ $backToGameButton.addEventListener('click', function () {
 $modalButton.addEventListener('click', function (event) {
   $modal.classList.toggle('hidden');
   data.firstTime = false;
+});
+
+$clearButton.addEventListener('click', function (event) {
+  data.selectedAnime = null;
+  $clearButton.classList.toggle('hidden');
 });

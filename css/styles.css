@@ -190,6 +190,15 @@ button[type="button"].info {
   width: 100%;
 }
 
+.clear-selected {
+  width: 175px;
+  height: 36px;
+}
+
+.margin-top-half-rem {
+  margin-top: 0.5rem;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -253,6 +262,10 @@ button[type="button"].info {
     margin-bottom: 1.5rem;
   }
 
+  .margin-top-half-rem {
+    margin-top: 1.5rem;
+  }
+
   .margin-right-33px {
     margin-right: 49px;
   }
@@ -291,6 +304,11 @@ button[type="button"].info {
     background-color: #efefef;
     border: none;
     border-radius: 6px;
+  }
+
+  .clear-selected {
+    width: 262px;
+    height: 54px;
   }
 
   div[data-view="anime-info"] > div.row {

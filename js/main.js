@@ -127,7 +127,11 @@ function timer() {
     var minutes = seconds / 60;
     var grossWPM = (($characters.length / 5) - $incorrectCharacters.length) / minutes;
     $accuracy.textContent = `${Math.round((($correctCharacters.length + 1) / $characters.length) * 100)}%`;
-    $wpm.textContent = `${Math.round(grossWPM)}`;
+    if (grossWPM < 0) {
+      $wpm.textContent = 0;
+    } else {
+      $wpm.textContent = `${Math.round(grossWPM)}`;
+    }
   }
 }
 

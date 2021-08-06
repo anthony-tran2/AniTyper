@@ -15,6 +15,8 @@ var $infoSynopsis = document.querySelector('p.synopsis');
 var $loader = document.querySelector('div.loader').closest('div.row');
 var $error = document.querySelector('div.error');
 var $networkError = document.querySelector('div.network-error');
+var $modalButton = document.querySelector('button.modal-button');
+var $modal = document.querySelector('.modal-row');
 var currentCharacter = 0;
 var seconds = null;
 var intervalId = null;
@@ -86,7 +88,6 @@ function gameLoading(event) {
       data.quoteData.character = xhr.response.character;
       data.quoteData.quote = xhr.response.quote;
       $viewTyping.classList.toggle('hidden');
-
     });
     xhr.send();
   } else {
@@ -102,6 +103,7 @@ function gameLoading(event) {
     $viewInfo.classList.toggle('hidden');
   }
   $loader.classList.toggle('hidden');
+  if (data.firstTime === true) { $modal.classList.toggle('hidden'); }
 }
 
 function clearPage() {
@@ -307,4 +309,9 @@ $backToGameButton.addEventListener('click', function () {
   $viewInfo.classList.toggle('hidden');
   $viewTyping.classList.toggle('hidden');
   data.view = 'typing-game';
+});
+
+$modalButton.addEventListener('click', function (event) {
+  $modal.classList.toggle('hidden');
+  data.firstTime = false;
 });

@@ -114,6 +114,18 @@ button[type="button"].info {
   justify-content: center;
 }
 
+.align-center {
+  align-items: center;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+.tint {
+  background-color: hsla(0, 0%, 0%, 0.6);
+}
+
 .text-underline {
   text-decoration: underline;
 }
@@ -165,6 +177,17 @@ button[type="button"].info {
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
+}
+
+.welcome-modal {
+  width: 21rem;
+  background-color: #efefef;
+  border: none;
+  border-radius: 6px;
+}
+
+.modal-header {
+  width: 100%;
 }
 
 @keyframes spin {
@@ -261,6 +284,13 @@ button[type="button"].info {
 
   .right-info {
     flex-basis: 650px;
+  }
+
+  .welcome-modal {
+    width: 46rem;
+    background-color: #efefef;
+    border: none;
+    border-radius: 6px;
   }
 
   div[data-view="anime-info"] > div.row {

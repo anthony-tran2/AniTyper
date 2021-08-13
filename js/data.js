@@ -1,6 +1,6 @@
 /* exported data */
 
-var data = {
+let data = {
   view: 'typing-game',
   animeAvailable: null,
   firstTime: true,
@@ -21,10 +21,10 @@ var data = {
   previousWPM: null
 };
 
-var previousDataJSON = localStorage.getItem('typing-game-local-storage');
+const previousDataJSON = localStorage.getItem('typing-game-local-storage');
 if (previousDataJSON !== null) {
-  var oldData = JSON.parse(previousDataJSON);
-  if (oldData.view === 'anime-info') { data = oldData; } else {
+  const oldData = JSON.parse(previousDataJSON);
+  if (oldData.view === 'anime-info') data = oldData; else {
     data.view = oldData.view;
     data.animeAvailable = oldData.animeAvailable;
     data.firstTime = oldData.firstTime;
@@ -45,7 +45,7 @@ function storeData(event) {
     data.previousAccuracy = null;
     data.previousWPM = null;
   }
-  var dataJSON = JSON.stringify(data);
+  const dataJSON = JSON.stringify(data);
   localStorage.setItem('typing-game-local-storage', dataJSON);
 }
 

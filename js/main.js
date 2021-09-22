@@ -1,55 +1,55 @@
-var $p = document.querySelector('p.quote');
-var $webPage = document.querySelector('body');
-var $stats = document.querySelector('div.stats');
-var $firstForm = document.querySelector('form');
-var $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
-var $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
-var $animeInfoButton = document.querySelector('button.info');
-var $backToGameButton = document.querySelector('button.back-to-game');
-var $viewInfo = document.querySelector('div[data-view="anime-info"]');
-var $viewTyping = document.querySelector('div[data-view="typing-game"]');
-var $infoTitle = document.querySelector('p.font-weight-500');
-var $infoImg = document.querySelector('img');
-var $infoSynopsis = document.querySelector('p.synopsis');
-var $loader = document.querySelector('div.loader').closest('div.row');
-var $error = document.querySelector('div.error');
-var $modalButton = document.querySelector('button.modal-button');
-var $modal = document.querySelector('.modal-row');
-var $clearButton = document.querySelector('button.clear-selected');
-var currentCharacter = 0;
-var seconds = null;
-var intervalId = null;
+const $p = document.querySelector('p.quote');
+const $webPage = document.querySelector('body');
+const $stats = document.querySelector('div.stats');
+const $firstForm = document.querySelector('form');
+const $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
+const $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
+const $animeInfoButton = document.querySelector('button.info');
+const $backToGameButton = document.querySelector('button.back-to-game');
+const $viewInfo = document.querySelector('div[data-view="anime-info"]');
+const $viewTyping = document.querySelector('div[data-view="typing-game"]');
+const $infoTitle = document.querySelector('p.font-weight-500');
+const $infoImg = document.querySelector('img');
+const $infoSynopsis = document.querySelector('p.synopsis');
+const $loader = document.querySelector('div.loader').closest('div.row');
+const $error = document.querySelector('div.error');
+const $modalButton = document.querySelector('button.modal-button');
+const $modal = document.querySelector('.modal-row');
+const $clearButton = document.querySelector('button.clear-selected');
+let currentCharacter = 0;
+let seconds = null;
+let intervalId = null;
 
 if (data.animeAvailable === null) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
   xhr.responseType = 'json';
-  xhr.addEventListener('load', function () {
+  xhr.addEventListener('load', () => {
     data.animeAvailable = xhr.response.sort();
   });
   xhr.send();
 }
 
-function animeSelection() {
-  var $datalist = document.querySelector('#anime');
-  for (var animesIndex = 1; animesIndex < data.animeAvailable.length; animesIndex++) {
-    var $option = document.createElement('option');
+const animeSelection = () => {
+  const $datalist = document.querySelector('#anime');
+  for (let animesIndex = 1; animesIndex < data.animeAvailable.length; animesIndex++) {
+    const $option = document.createElement('option');
     $option.setAttribute('value', data.animeAvailable[animesIndex]);
     $datalist.appendChild($option);
   }
-}
+};
 
-function createQuote(words) {
-  for (var i = 0; i < words.length; i++) {
-    var $newWord = document.createElement('span');
+const createQuote = words => {
+  for (let i = 0; i < words.length; i++) {
+    const $newWord = document.createElement('span');
     $newWord.className = 'word';
-    for (var letterIndex = 0; letterIndex < words[i].length; letterIndex++) {
-      var $letter = document.createElement('span');
+    for (let letterIndex = 0; letterIndex < words[i].length; letterIndex++) {
+      const $letter = document.createElement('span');
       $letter.className = 'letter';
       $letter.textContent = words[i][letterIndex];
       $newWord.appendChild($letter);
     }
-    var $space = document.createElement('span');
+    const $space = document.createElement('span');
     $space.className = 'letter';
     $space.textContent = ' ';
     $p.appendChild($newWord);
@@ -59,29 +59,29 @@ function createQuote(words) {
     $stats.classList.toggle('hidden');
     document.querySelector('p.accuracy').textContent = data.previousAccuracy;
     document.querySelector('p.wpm').textContent = data.previousWPM;
-    var $characters = document.querySelectorAll('span.letter');
-    for (var c = 0; c < $characters.length; c++) {
+    const $characters = document.querySelectorAll('span.letter');
+    for (let c = 0; c < $characters.length; c++) {
       $characters[c].className = data.previousCharacterClasses[c];
     }
   } else {
-    var $firstWord = document.querySelector('span.word');
+    const $firstWord = document.querySelector('span.word');
     $firstWord.classList.toggle('active');
-    var $firstCharacter = $firstWord.querySelector('span.letter');
+    const $firstCharacter = $firstWord.querySelector('span.letter');
     $firstCharacter.classList.toggle('current-character');
   }
-}
+};
 
-function gameLoading(event) {
+const gameLoading = event => {
   if (data.view === 'typing-game') {
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://animechan.vercel.app/api/random');
     xhr.responseType = 'json';
-    xhr.addEventListener('load', function (event) {
-      var $anime = document.querySelector('h3.anime');
-      var $character = document.querySelector('h3.character');
+    xhr.addEventListener('load', event => {
+      const $anime = document.querySelector('h3.anime');
+      const $character = document.querySelector('h3.character');
       $anime.textContent = `Anime: ${xhr.response.anime}`;
       $character.textContent = `Character: ${xhr.response.character}`;
-      var wordList = xhr.response.quote.split(' ');
+      const wordList = xhr.response.quote.split(' ');
       createQuote(wordList);
       data.quoteData.anime = xhr.response.anime;
       data.quoteData.character = xhr.response.character;
@@ -93,39 +93,39 @@ function gameLoading(event) {
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
-    var $anime = document.querySelector('h3.anime');
-    var $character = document.querySelector('h3.character');
+    const $anime = document.querySelector('h3.anime');
+    const $character = document.querySelector('h3.character');
     $anime.textContent = 'Anime: ' + data.quoteData.anime;
     $character.textContent = 'Character: ' + data.quoteData.character;
-    var wordList = data.quoteData.quote.split(' ');
+    const wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
     $viewInfo.classList.toggle('hidden');
   }
   $loader.classList.toggle('hidden');
-  if (data.firstTime === true) { $modal.classList.toggle('hidden'); }
-}
+  if (data.firstTime === true) $modal.classList.toggle('hidden');
+};
 
-function clearPage() {
+const clearPage = () => {
   $p.textContent = '';
   currentCharacter = 0;
   clearInterval(intervalId);
   seconds = null;
   intervalId = null;
   $stats.className = 'row stats margin-bottom-stats font-size-36px justify-center hidden';
-}
+};
 
-function timer() {
-  var $characters = document.querySelectorAll('span.letter');
+const timer = () => {
+  const $characters = document.querySelectorAll('span.letter');
   seconds += 1;
   if (currentCharacter + 1 === $characters.length) {
     clearInterval(intervalId);
     $stats.classList.toggle('hidden');
-    var $accuracy = document.querySelector('p.accuracy');
-    var $wpm = document.querySelector('p.wpm');
-    var $correctCharacters = document.querySelectorAll('span.correct');
-    var $incorrectCharacters = document.querySelectorAll('span.incorrect');
-    var minutes = seconds / 60;
-    var grossWPM = (($characters.length / 5) - $incorrectCharacters.length) / minutes;
+    const $accuracy = document.querySelector('p.accuracy');
+    const $wpm = document.querySelector('p.wpm');
+    const $correctCharacters = document.querySelectorAll('span.correct');
+    const $incorrectCharacters = document.querySelectorAll('span.incorrect');
+    const minutes = seconds / 60;
+    const grossWPM = (($characters.length / 5) - $incorrectCharacters.length) / minutes;
     $accuracy.textContent = `${Math.round((($correctCharacters.length + 1) / $characters.length) * 100)}%`;
     if (grossWPM < 0) {
       $wpm.textContent = 0;
@@ -133,23 +133,23 @@ function timer() {
       $wpm.textContent = `${Math.round(grossWPM)}`;
     }
   }
-}
+};
 
-function selectedGenration(anime) {
-  var xhr = new XMLHttpRequest();
+const selectedGenration = anime => {
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(anime)}`);
   xhr.responseType = 'json';
-  xhr.addEventListener('load', function (event) {
+  xhr.addEventListener('load', event => {
     if (xhr.response.error === 'No related quotes found!') {
       $error.classList.toggle('hidden');
     } else {
-      var selectedQuoteList = xhr.response.length;
-      var randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
-      var $anime = document.querySelector('h3.anime');
-      var $character = document.querySelector('h3.character');
+      const selectedQuoteList = xhr.response.length;
+      const randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
+      const $anime = document.querySelector('h3.anime');
+      const $character = document.querySelector('h3.character');
       $anime.textContent = `Selected Anime: ${randomSelectedQuote.anime}`;
       $character.textContent = `Character: ${randomSelectedQuote.character}`;
-      var wordList = randomSelectedQuote.quote.split(' ');
+      const wordList = randomSelectedQuote.quote.split(' ');
       createQuote(wordList);
       data.quoteData.anime = randomSelectedQuote.anime;
       data.quoteData.character = randomSelectedQuote.character;
@@ -160,11 +160,11 @@ function selectedGenration(anime) {
     $clearButton.className = 'font-size-18px clear-selected';
   });
   xhr.send();
-}
+};
 
-window.addEventListener('load', function (event) {
-  var $networkError = document.querySelector('div.network-error');
-  function updateOnlineStatus(event) {
+window.addEventListener('load', event => {
+  const $networkError = document.querySelector('div.network-error');
+  const updateOnlineStatus = event => {
     if (navigator.onLine === true) {
       $loader.className = 'row justify-center margin-top-selection';
       $networkError.className = 'row justify-center network-error hidden';
@@ -181,7 +181,7 @@ window.addEventListener('load', function (event) {
       $error.className = 'container error hidden';
       $networkError.classList.toggle('hidden');
     }
-  }
+  };
 
   updateOnlineStatus();
 
@@ -190,8 +190,8 @@ window.addEventListener('load', function (event) {
   window.addEventListener('offline', updateOnlineStatus);
 });
 
-$webPage.addEventListener('keydown', function (event) {
-  var $characters = document.querySelectorAll('span.letter');
+$webPage.addEventListener('keydown', event => {
+  const $characters = document.querySelectorAll('span.letter');
   if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput) {
     if (event.key === $characters[currentCharacter].textContent) {
       $characters[currentCharacter].classList.toggle('correct');
@@ -212,7 +212,7 @@ $webPage.addEventListener('keydown', function (event) {
       $characters[currentCharacter].classList.toggle('current-character');
     }
     if ($characters[currentCharacter].textContent !== ' ') {
-      var $currentWord = $characters[currentCharacter].closest('span.word');
+      const $currentWord = $characters[currentCharacter].closest('span.word');
       $currentWord.className = 'word active';
     }
   }
@@ -238,36 +238,36 @@ $webPage.addEventListener('keydown', function (event) {
   }
 });
 
-$secondForm.addEventListener('submit', function (event) {
+$secondForm.addEventListener('submit', event => {
   event.preventDefault();
   $viewTyping.classList.toggle('hidden');
   $loader.classList.toggle('hidden');
   clearPage();
-  var currentSelectedAnime = $secondInput.value;
+  const currentSelectedAnime = $secondInput.value;
   data.selectedAnime = $secondInput.value;
   selectedGenration(currentSelectedAnime);
   $secondInput.value = '';
 });
 
-$firstForm.addEventListener('submit', function (event) {
-  var $firstInput = document.querySelector('input[list]');
+$firstForm.addEventListener('submit', event => {
+  const $firstInput = document.querySelector('input[list]');
   event.preventDefault();
   $loader.classList.toggle('hidden');
   $error.classList.toggle('hidden');
   clearPage();
-  var currentSelectedAnime = $firstInput.value;
+  const currentSelectedAnime = $firstInput.value;
   data.selectedAnime = $firstInput.value;
   selectedGenration(currentSelectedAnime);
   $firstInput.value = '';
 });
 
-$animeInfoButton.addEventListener('click', function () {
+$animeInfoButton.addEventListener('click', event => {
   $viewTyping.classList.toggle('hidden');
   $loader.classList.toggle('hidden');
   data.previousCharacterClassesCounter = 0;
   data.previousCharacterClasses = [];
-  var $characters = document.querySelectorAll('span.letter');
-  for (var i = 0; i < $characters.length; i++) {
+  const $characters = document.querySelectorAll('span.letter');
+  for (let i = 0; i < $characters.length; i++) {
     if ($characters[i].className !== 'letter') {
       data.previousCharacterClasses.push($characters[i].className);
       data.previousCharacterClassesCounter++;
@@ -276,12 +276,12 @@ $animeInfoButton.addEventListener('click', function () {
   data.previousAccuracy = document.querySelector('p.accuracy').textContent;
   data.previousWPM = document.querySelector('p.wpm').textContent;
   data.view = 'anime-info';
-  var anime = data.quoteData.anime;
-  var xhr = new XMLHttpRequest();
+  const anime = data.quoteData.anime;
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', `https://api.jikan.moe/v3/search/anime?q=${encodeURIComponent(anime)}&page=1`);
   xhr.responseType = 'json';
-  xhr.addEventListener('load', function (event) {
-    for (var i = 0; i < xhr.response.results.length; i++) {
+  xhr.addEventListener('load', event => {
+    for (let i = 0; i < xhr.response.results.length; i++) {
       if (xhr.response.results[i].title === anime) {
         data.animeInfo.title = xhr.response.results[i].title;
         data.animeInfo.imgURL = xhr.response.results[i].image_url;
@@ -302,18 +302,18 @@ $animeInfoButton.addEventListener('click', function () {
   xhr.send();
 });
 
-$backToGameButton.addEventListener('click', function () {
+$backToGameButton.addEventListener('click', event => {
   $viewInfo.classList.toggle('hidden');
   $viewTyping.classList.toggle('hidden');
   data.view = 'typing-game';
 });
 
-$modalButton.addEventListener('click', function (event) {
+$modalButton.addEventListener('click', event => {
   $modal.classList.toggle('hidden');
   data.firstTime = false;
 });
 
-$clearButton.addEventListener('click', function (event) {
+$clearButton.addEventListener('click', event => {
   data.selectedAnime = null;
   $clearButton.classList.toggle('hidden');
 });

@@ -6,7 +6,10 @@ I built this project because I loved typing on my custom mechanical keyboards an
 
 [Live Demo](https://anthony-tran2.github.io/AniTyper/)  
 
-**Languages Used:** JavaScript, HTML5, CSS  
+**Languages Used:** 
+* JavaScript
+* HTML5
+* CSS  
 
 **Databases Used:**
 * [Animechan](https://animechan.vercel.app/)  

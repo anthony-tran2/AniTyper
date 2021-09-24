@@ -32,7 +32,7 @@ if (previousDataJSON !== null) {
   }
 }
 
-function storeData(event) {
+window.addEventListener('beforeunload', event => {
   if (data.view === 'typing-game') {
     data.quoteData.anime = null;
     data.quoteData.character = null;
@@ -47,6 +47,4 @@ function storeData(event) {
   }
   const dataJSON = JSON.stringify(data);
   localStorage.setItem('typing-game-local-storage', dataJSON);
-}
-
-window.addEventListener('beforeunload', storeData);
+});

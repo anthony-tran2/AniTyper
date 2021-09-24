@@ -20,16 +20,6 @@ let currentCharacter = 0;
 let seconds = null;
 let intervalId = null;
 
-if (data.animeAvailable === null) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function () {
-    data.animeAvailable = xhr.response.sort();
-  });
-  xhr.send();
-}
-
 function animeSelection() {
   const $datalist = document.querySelector('#anime');
   for (let animesIndex = 1; animesIndex < data.animeAvailable.length; animesIndex++) {
@@ -162,17 +152,26 @@ function selectedGenration(anime) {
   xhr.send();
 }
 
-window.addEventListener('load', function (event) {
+window.addEventListener('load', event => {
   const $networkError = document.querySelector('div.network-error');
-  function updateOnlineStatus() {
-    if (navigator.connection.downlink !== 0) {
+  const updateOnlineStatus = event => {
+    if (navigator.onLine === true) {
       $loader.className = 'row justify-center margin-top-selection';
       $networkError.className = 'row justify-center network-error hidden';
-      animeSelection();
-      if (!data.selectedAnime) {
-        gameLoading();
-      } else {
-        selectedGenration(data.selectedAnime);
+      if (data.animeAvailable === null) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://animechan.vercel.app/api/available/anime');
+        xhr.responseType = 'json';
+        xhr.addEventListener('load', function () {
+          data.animeAvailable = xhr.response.sort();
+          animeSelection();
+          if (!data.selectedAnime) {
+            gameLoading();
+          } else {
+            selectedGenration(data.selectedAnime);
+          }
+        });
+        xhr.send();
       }
     } else {
       $loader.className = 'row justify-center margin-top-selection hidden';
@@ -181,11 +180,13 @@ window.addEventListener('load', function (event) {
       $error.className = 'container error hidden';
       $networkError.classList.toggle('hidden');
     }
-  }
+  };
 
   updateOnlineStatus();
 
-  navigator.connection.onchange = () => { updateOnlineStatus(); };
+  window.addEventListener('online', updateOnlineStatus);
+
+  window.addEventListener('offline', updateOnlineStatus);
 });
 
 $webPage.addEventListener('keydown', function (event) {

@@ -183,6 +183,14 @@ window.addEventListener('load', event => {
   window.addEventListener('offline', updateOnlineStatus);
 });
 
+$p.addEventListener('click', () => {
+  document.querySelector('#gameInput').focus();
+});
+
+document.querySelector('#gameInput').addEventListener('keydown', e => {
+  e.preventDefault();
+});
+
 $webPage.addEventListener('keydown', event => {
   const $characters = document.querySelectorAll('span.letter');
   if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput) {

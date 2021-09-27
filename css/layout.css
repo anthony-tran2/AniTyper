@@ -86,12 +86,12 @@
   font-size: 14px;
 }
 
-.font-size-18px {
-  font-size: 18px;
+.font-size-1rem {
+  font-size: 1rem;
 }
 
-.font-size-36px {
-  font-size: 36px;
+.big-button-font {
+  font-size: 1.8rem;
 }
 
 .font-weight-500 {
@@ -111,12 +111,12 @@
     font-size: 21px;
   }
 
-  .font-size-18px {
-    font-size: 27px;
+  .font-size-1rem {
+    font-size: 1.69rem;
   }
 
-  .font-size-36px {
-    font-size: 54px;
+  .big-button-font {
+    font-size: 3.6rem;
   }
 
   .margin-bottom-half-rem {

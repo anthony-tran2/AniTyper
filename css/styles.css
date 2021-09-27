@@ -22,7 +22,7 @@ img {
   object-fit: cover;
   width: 225px;
   height: 320px;
-  margin-block: 36px;
+  margin-top: 36px;
 }
 
 button:hover {
@@ -103,7 +103,7 @@ button[type="button"].info {
   width: 267px;
   height: 56px;
   margin-top: 1rem;
-  font-size: 34px;
+  font-size: 1.8rem;
 }
 
 .loader {
@@ -159,7 +159,7 @@ button[type="button"].info {
     object-fit: cover;
     width: 337px;
     height: 480px;
-    margin-block: 54px;
+    margin-top: 54px;
   }
 
   button[type="submit"] {
@@ -228,4 +228,11 @@ button[type="button"].info {
   div.right-info > p.margin-top-info {
     font-size: 27px;
   }
+}
+
+#gameInput {
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
 }

@@ -191,6 +191,19 @@ document.querySelector('#gameInput').addEventListener('keydown', e => {
   e.preventDefault();
 });
 
+document.querySelector('.no-styling').addEventListener('click', () => {
+  clearPage();
+  $loader.className = 'row justify-center margin-top-selection';
+  $viewTyping.className = 'container hidden';
+  $viewInfo.className = 'container hidden';
+  data.view = 'typing-game';
+  if (!data.selectedAnime) {
+    gameLoading();
+  } else {
+    selectedGenration(data.selectedAnime);
+  }
+});
+
 $webPage.addEventListener('keydown', event => {
   const $characters = document.querySelectorAll('span.letter');
   if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput) {

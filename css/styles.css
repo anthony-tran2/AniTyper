@@ -236,3 +236,10 @@ button[type="button"].info {
   margin: 0;
   border: none;
 }
+
+button.no-styling {
+  background-color: transparent;
+  border: none;
+  font-weight: inherit;
+  margin-bottom: 1rem;
+}

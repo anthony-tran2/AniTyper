@@ -15,7 +15,7 @@ I built this project because I loved typing on my custom mechanical keyboards an
 * [Animechan](https://animechan.vercel.app/)  
 * [Jikan API](https://jikan.moe/)  
                 
-## Features:
+## Features
 * User can play a full functional typing game
 * User can restart their typing at any time by pressing tab
 * User can see their typing stats after the game is over (Accuracy and WPM)
@@ -29,7 +29,7 @@ https://user-images.githubusercontent.com/85326711/129082553-42ad2fab-8b96-44ea-
 https://user-images.githubusercontent.com/85326711/129082738-8d109a8e-0053-468c-a127-9e6ded4f5ae7.mp4
 
 
-## Future Features:
+## Future Features
 * User can select multiple animes at a time.  
 * User can delete one anime at a time instead of clearing all of the selected animes at once.  
   

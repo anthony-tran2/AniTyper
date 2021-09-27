@@ -28,7 +28,7 @@
            and get a brief summary about the current anime that your quote is from if it interests you!
         </p>
         <div class="text-align-center">
-          <button type="button" class="modal-button font-size-18px">Got it!</button>
+          <button type="button" class="modal-button font-size-1rem">Got it!</button>
         </div>
       </fieldset>
     </form>
@@ -48,8 +48,8 @@
     <div class="container error hidden">
       <div class="row margin-top-selection">
         <form>
-          <input required class="font-size-18px margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
-          <button type="submit" class="font-size-18px">Select</button>
+          <input required class="font-size-1rem margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
+          <button type="submit" class="font-size-1rem">Select</button>
         </form>
       </div>
       <div class="row justify-center">
@@ -59,24 +59,24 @@
     <div data-view="typing-game" class="container hidden">
       <div class="row margin-top-selection margin-bottom-selection">
         <form>
-          <input required class="font-size-18px margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
+          <input required class="font-size-1rem margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
           <datalist id="anime">
           </datalist>
-          <button type="submit" class="font-size-18px">Select</button>
+          <button type="submit" class="font-size-1rem">Select</button>
         </form>
       </div>
-      <div class="row active stats margin-bottom-stats font-size-36px justify-center hidden">
+      <div class="row active stats margin-bottom-stats big-button-font justify-center hidden">
         <div class="column-quarter text-align-center">
-          <p class="text-underline font-size-36px margin-block-0">Accuracy</p>
-          <p class="stat-styling font-size-36px margin-block-0 accuracy"></p>
+          <p class="text-underline big-button-font margin-block-0">Accuracy</p>
+          <p class="stat-styling big-button-font margin-block-0 accuracy"></p>
         </div>
         <div class="column-quarter text-align-center">
-          <p class="text-underline font-size-36px margin-block-0">WPM</p>
-          <p class="stat-styling font-size-36px margin-block-0 wpm"></p>
+          <p class="text-underline big-button-font margin-block-0">WPM</p>
+          <p class="stat-styling big-button-font margin-block-0 wpm"></p>
         </div>
       </div>
       <div class="row margin-top-half-rem">
-        <button type="button" class="font-size-18px clear-selected hidden">Clear Selection</button>
+        <button type="button" class="font-size-1rem clear-selected hidden">Clear Selection</button>
       </div>
       <div class="row">
         <h3 class="margin-top-0 margin-bottom-half-rem anime"></h3>
@@ -85,13 +85,14 @@
         <h3 class="margin-top-0 character margin-bottom-half-rem"></h3>
       </div>
       <div class="row">
+        <input id="gameInput" type="text">
         <p class="inactive quote margin-top-0"></p>
       </div>
       <div class="row justify-center">
-        <p class="inactive font-size-14px"><span class="tab active">tab</span> - restart game</p>
+        <button class="inactive font-size-14px no-styling"><span class="tab active">tab</span> - restart game</button>
       </div>
       <div class="row justify-center">
-        <button type="button" class="font-size-36px info font-weight-500">Anime Info</button>
+        <button type="button" class="big-button-font info font-weight-500">Anime Info</button>
       </div>
     </div>
     <div data-view="anime-info" class="container hidden">

@@ -1,9 +1,7 @@
 const $p = document.querySelector('p.quote');
 const $webPage = document.querySelector('body');
 const $stats = document.querySelector('div.stats');
-const $firstForm = document.querySelector('form.error-selection');
 const $firstInput = document.querySelector('input[list]');
-const $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
 const $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
 const $animeInfoButton = document.querySelector('button.info');
 const $backToGameButton = document.querySelector('button.back-to-game');
@@ -255,44 +253,6 @@ $webPage.addEventListener('keydown', event => {
   }
 });
 
-$secondForm.addEventListener('submit', event => {
-  event.preventDefault();
-  $viewTyping.classList.toggle('hidden');
-  $loader.classList.toggle('hidden');
-  clearPage();
-  const currentSelectedAnime = $secondInput.value;
-  data.selectedAnime = $secondInput.value;
-  if (currentSelectedAnime !== '') {
-    selectedGenration(currentSelectedAnime);
-    $secondInput.value = '';
-  } else {
-    clearPage();
-    $viewTyping.className = 'container hidden';
-    $viewInfo.className = 'container hidden';
-    data.view = 'typing-game';
-    gameLoading();
-  }
-});
-
-$firstForm.addEventListener('submit', event => {
-  event.preventDefault();
-  $loader.classList.toggle('hidden');
-  $error.classList.toggle('hidden');
-  clearPage();
-  const currentSelectedAnime = $firstInput.value;
-  data.selectedAnime = $firstInput.value;
-  if (currentSelectedAnime !== '') {
-    selectedGenration(currentSelectedAnime);
-    $secondInput.value = '';
-  } else {
-    clearPage();
-    $viewTyping.className = 'container hidden';
-    $viewInfo.className = 'container hidden';
-    data.view = 'typing-game';
-    gameLoading();
-  }
-});
-
 $animeInfoButton.addEventListener('click', () => {
   $viewTyping.classList.toggle('hidden');
   $loader.classList.toggle('hidden');
@@ -344,3 +304,65 @@ $modalButton.addEventListener('click', event => {
   $modal.classList.toggle('hidden');
   data.firstTime = false;
 });
+
+const handleInput = e => {
+  var opts = document.getElementById('anime').childNodes;
+  if (e.target.value === '' && data.selectedAnime) {
+    $loader.classList.toggle('hidden');
+    clearPage();
+    data.selectedAnime = null;
+    $viewTyping.className = 'container hidden';
+    $viewInfo.className = 'container hidden';
+    data.view = 'typing-game';
+    gameLoading();
+  }
+  for (var i = 0; i < opts.length; i++) {
+    if (opts[i].value === e.target.value) {
+      $loader.classList.toggle('hidden');
+      e.target === $firstInput ? $error.classList.toggle('hidden') : $viewTyping.classList.toggle('hidden');
+      clearPage();
+      const currentSelectedAnime = e.target.value;
+      data.selectedAnime = e.target.value;
+      if (currentSelectedAnime !== '') {
+        selectedGenration(currentSelectedAnime);
+        $secondInput.value = '';
+      } else {
+        clearPage();
+        $viewTyping.className = 'container hidden';
+        $viewInfo.className = 'container hidden';
+        data.view = 'typing-game';
+        gameLoading();
+      }
+      break;
+    }
+  }
+};
+
+$firstInput.oninput = handleInput;
+$secondInput.oninput = handleInput;
+
+//   $secondInput.oninput = e => {
+//     var opts = document.getElementById('anime').childNodes;
+//     for (var i = 0; i < opts.length; i++) {
+//       console.log(i);
+//       if (opts[i].value === e.target.value) {
+//         $viewTyping.classList.toggle('hidden');
+//         $loader.classList.toggle('hidden');
+//         clearPage();
+//         const currentSelectedAnime = e.target.value;
+//         data.selectedAnime = e.target.value;
+//         if (currentSelectedAnime !== '') {
+//           selectedGenration(currentSelectedAnime);
+//           $secondInput.value = '';
+//         } else {
+//           clearPage();
+//           $viewTyping.className = 'container hidden';
+//           $viewInfo.className = 'container hidden';
+//           data.view = 'typing-game';
+//           gameLoading();
+//         }
+//         break;
+//       }
+//     }
+//   };
+// };

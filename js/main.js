@@ -1,7 +1,8 @@
 const $p = document.querySelector('p.quote');
 const $webPage = document.querySelector('body');
 const $stats = document.querySelector('div.stats');
-const $firstForm = document.querySelector('form');
+const $firstForm = document.querySelector('form.error-selection');
+const $firstInput = document.querySelector('input[list]');
 const $secondForm = document.querySelector('div[data-view="typing-game"] > div.row > form');
 const $secondInput = document.querySelector('div[data-view="typing-game"] > div.row > form > input[list]');
 const $animeInfoButton = document.querySelector('button.info');
@@ -15,7 +16,6 @@ const $loader = document.querySelector('div.loader').closest('div.row');
 const $error = document.querySelector('div.error');
 const $modalButton = document.querySelector('button.modal-button');
 const $modal = document.querySelector('.modal-row');
-const $clearButton = document.querySelector('button.clear-selected');
 let currentCharacter = 0;
 let seconds = null;
 let intervalId = null;
@@ -130,12 +130,16 @@ const selectedGenration = anime => {
   xhr.open('GET', `https://animechan.vercel.app/api/quotes/anime?title=${encodeURIComponent(anime)}`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', event => {
-    if (xhr.response.error === 'No related quotes found!') $error.classList.toggle('hidden'); else {
+    if (xhr.response.error === 'No related quotes found!') {
+      $error.classList.toggle('hidden');
+      $firstInput.value = data.selectedAnime;
+    } else {
       const selectedQuoteList = xhr.response.length;
       const randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
       const $anime = document.querySelector('h3.anime');
       const $character = document.querySelector('h3.character');
-      $anime.textContent = `Selected Anime: ${randomSelectedQuote.anime}`;
+      $secondInput.value = randomSelectedQuote.anime;
+      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
       $character.textContent = `Character: ${randomSelectedQuote.character}`;
       const wordList = randomSelectedQuote.quote.split(' ');
       createQuote(wordList);
@@ -145,7 +149,6 @@ const selectedGenration = anime => {
       $viewTyping.classList.toggle('hidden');
     }
     $loader.classList.toggle('hidden');
-    $clearButton.className = 'font-size-18px clear-selected';
   });
   xhr.send();
 };
@@ -206,7 +209,7 @@ document.querySelector('.no-styling').addEventListener('click', () => {
 
 $webPage.addEventListener('keydown', event => {
   const $characters = document.querySelectorAll('span.letter');
-  if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput) {
+  if ($characters.length !== currentCharacter + 1 && event.target !== $secondInput && event.target !== $firstInput) {
     if (event.key === $characters[currentCharacter].textContent) {
       $characters[currentCharacter].classList.toggle('correct');
       $characters[currentCharacter].classList.toggle('current-character');
@@ -259,20 +262,35 @@ $secondForm.addEventListener('submit', event => {
   clearPage();
   const currentSelectedAnime = $secondInput.value;
   data.selectedAnime = $secondInput.value;
-  selectedGenration(currentSelectedAnime);
-  $secondInput.value = '';
+  if (currentSelectedAnime !== '') {
+    selectedGenration(currentSelectedAnime);
+    $secondInput.value = '';
+  } else {
+    clearPage();
+    $viewTyping.className = 'container hidden';
+    $viewInfo.className = 'container hidden';
+    data.view = 'typing-game';
+    gameLoading();
+  }
 });
 
 $firstForm.addEventListener('submit', event => {
-  const $firstInput = document.querySelector('input[list]');
   event.preventDefault();
   $loader.classList.toggle('hidden');
   $error.classList.toggle('hidden');
   clearPage();
   const currentSelectedAnime = $firstInput.value;
   data.selectedAnime = $firstInput.value;
-  selectedGenration(currentSelectedAnime);
-  $firstInput.value = '';
+  if (currentSelectedAnime !== '') {
+    selectedGenration(currentSelectedAnime);
+    $secondInput.value = '';
+  } else {
+    clearPage();
+    $viewTyping.className = 'container hidden';
+    $viewInfo.className = 'container hidden';
+    data.view = 'typing-game';
+    gameLoading();
+  }
 });
 
 $animeInfoButton.addEventListener('click', () => {
@@ -325,9 +343,4 @@ $backToGameButton.addEventListener('click', () => {
 $modalButton.addEventListener('click', event => {
   $modal.classList.toggle('hidden');
   data.firstTime = false;
-});
-
-$clearButton.addEventListener('click', event => {
-  data.selectedAnime = null;
-  $clearButton.classList.toggle('hidden');
 });

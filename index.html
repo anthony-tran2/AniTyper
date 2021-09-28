@@ -47,9 +47,8 @@
     </div>
     <div class="container error hidden">
       <div class="row margin-top-selection">
-        <form>
-          <input required class="font-size-1rem margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
-          <button type="submit" class="font-size-1rem">Select</button>
+        <form class="error-selection">
+          <input class="font-size-1rem margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
         </form>
       </div>
       <div class="row justify-center">
@@ -59,10 +58,9 @@
     <div data-view="typing-game" class="container hidden">
       <div class="row margin-top-selection margin-bottom-selection">
         <form>
-          <input required class="font-size-1rem margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
+          <input class="font-size-1rem margin-right-33px" list="anime" placeholder="Select Anime" name="anime-selection">
           <datalist id="anime">
           </datalist>
-          <button type="submit" class="font-size-1rem">Select</button>
         </form>
       </div>
       <div class="row active stats margin-bottom-stats big-button-font justify-center hidden">
@@ -74,9 +72,6 @@
           <p class="text-underline big-button-font margin-block-0">WPM</p>
           <p class="stat-styling big-button-font margin-block-0 wpm"></p>
         </div>
-      </div>
-      <div class="row margin-top-half-rem">
-        <button type="button" class="font-size-1rem clear-selected hidden">Clear Selection</button>
       </div>
       <div class="row">
         <h3 class="margin-top-0 margin-bottom-half-rem anime"></h3>

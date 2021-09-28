@@ -41,7 +41,7 @@ button[type="button"].info {
 }
 
 ::placeholder {
-  color: black;
+  color: rgb(121, 121, 121);
   font-weight: bold;
 }
 
@@ -124,11 +124,6 @@ button[type="button"].info {
 
 .modal-header {
   width: 100%;
-}
-
-.clear-selected {
-  width: 175px;
-  height: 36px;
 }
 
 @keyframes spin {
@@ -214,11 +209,6 @@ button[type="button"].info {
     border-radius: 6px;
   }
 
-  .clear-selected {
-    width: 262px;
-    height: 54px;
-  }
-
   div[data-view="anime-info"] > div.row {
     justify-content: center;
     align-items: center;
@@ -243,4 +233,8 @@ button.no-styling {
   border: none;
   font-weight: inherit;
   margin-bottom: 1rem;
+}
+
+button.no-styling:hover {
+  text-decoration: underline;
 }

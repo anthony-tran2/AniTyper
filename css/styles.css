@@ -244,3 +244,7 @@ button.no-styling {
   font-weight: inherit;
   margin-bottom: 1rem;
 }
+
+button.no-styling:hover {
+  text-decoration: underline;
+}

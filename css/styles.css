@@ -41,7 +41,7 @@ button[type="button"].info {
 }
 
 ::placeholder {
-  color: black;
+  color: rgb(121, 121, 121);
   font-weight: bold;
 }
 
@@ -126,11 +126,6 @@ button[type="button"].info {
   width: 100%;
 }
 
-.clear-selected {
-  width: 175px;
-  height: 36px;
-}
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -212,11 +207,6 @@ button[type="button"].info {
     background-color: #efefef;
     border: none;
     border-radius: 6px;
-  }
-
-  .clear-selected {
-    width: 262px;
-    height: 54px;
   }
 
   div[data-view="anime-info"] > div.row {

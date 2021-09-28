@@ -340,29 +340,3 @@ const handleInput = e => {
 
 $firstInput.oninput = handleInput;
 $secondInput.oninput = handleInput;
-
-//   $secondInput.oninput = e => {
-//     var opts = document.getElementById('anime').childNodes;
-//     for (var i = 0; i < opts.length; i++) {
-//       console.log(i);
-//       if (opts[i].value === e.target.value) {
-//         $viewTyping.classList.toggle('hidden');
-//         $loader.classList.toggle('hidden');
-//         clearPage();
-//         const currentSelectedAnime = e.target.value;
-//         data.selectedAnime = e.target.value;
-//         if (currentSelectedAnime !== '') {
-//           selectedGenration(currentSelectedAnime);
-//           $secondInput.value = '';
-//         } else {
-//           clearPage();
-//           $viewTyping.className = 'container hidden';
-//           $viewInfo.className = 'container hidden';
-//           data.view = 'typing-game';
-//           gameLoading();
-//         }
-//         break;
-//       }
-//     }
-//   };
-// };

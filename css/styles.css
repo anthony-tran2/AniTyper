@@ -1,7 +1,7 @@
 input {
   background-color: #eee;
   color: black;
-  width: 167px;
+  width: 501px;
   height: 37px;
   border-radius: 4px;
 }
@@ -47,6 +47,7 @@ button[type="button"].info {
 ::placeholder {
   color: rgb(121, 121, 121);
   font-weight: bold;
+  padding-left: 0.5rem;
 }
 
 .inactive {
@@ -154,7 +155,7 @@ button[type="button"].info {
   input {
     background-color: #eee;
     color: black;
-    width: 250px;
+    width: 750px;
     height: 55px;
     border-radius: 4px;
   }

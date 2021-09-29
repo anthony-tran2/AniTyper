@@ -25,6 +25,10 @@ img {
   margin-top: 36px;
 }
 
+span {
+  font-weight: 300;
+}
+
 button:hover {
   cursor: pointer;
   background-color: hsla(205, 91%, 40%, 0.72);

@@ -67,10 +67,10 @@ const gameLoading = event => {
     xhr.open('GET', 'https://animechan.vercel.app/api/random');
     xhr.responseType = 'json';
     xhr.addEventListener('load', event => {
-      const $anime = document.querySelector('h3.anime');
-      const $character = document.querySelector('h3.character');
-      $anime.textContent = `Anime: ${xhr.response.anime}`;
-      $character.textContent = `Character: ${xhr.response.character}`;
+      const $anime = document.querySelector('h3.anime > span');
+      const $character = document.querySelector('h3.character > span');
+      $anime.textContent = xhr.response.anime;
+      $character.textContent = xhr.response.character;
       const wordList = xhr.response.quote.split(' ');
       createQuote(wordList);
       data.quoteData.anime = xhr.response.anime;
@@ -83,10 +83,10 @@ const gameLoading = event => {
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
-    const $anime = document.querySelector('h3.anime');
-    const $character = document.querySelector('h3.character');
-    $anime.textContent = 'Anime: ' + data.quoteData.anime;
-    $character.textContent = 'Character: ' + data.quoteData.character;
+    const $anime = document.querySelector('h3.anime > span');
+    const $character = document.querySelector('h3.character > span');
+    $anime.textContent = data.quoteData.anime;
+    $character.textContent = data.quoteData.character;
     const wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
     $viewInfo.classList.toggle('hidden');
@@ -136,11 +136,11 @@ const selectedGenration = anime => {
     } else {
       const selectedQuoteList = xhr.response.length;
       const randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
-      const $anime = document.querySelector('h3.anime');
-      const $character = document.querySelector('h3.character');
+      const $anime = document.querySelector('h3.anime > span');
+      const $character = document.querySelector('h3.character > span');
       $secondInput.value = randomSelectedQuote.anime;
-      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
-      $character.textContent = `Character: ${randomSelectedQuote.character}`;
+      $anime.textContent = randomSelectedQuote.anime;
+      $character.textContent = randomSelectedQuote.character;
       const wordList = randomSelectedQuote.quote.split(' ');
       createQuote(wordList);
       data.quoteData.anime = randomSelectedQuote.anime;

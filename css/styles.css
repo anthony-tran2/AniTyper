@@ -120,10 +120,15 @@ button[type="button"].info {
   background-color: #efefef;
   border: none;
   border-radius: 6px;
+  padding: 1rem;
 }
 
 .modal-header {
-  width: 100%;
+  margin-top: 0;
+}
+
+.modal-body {
+  line-height: 150%;
 }
 
 @keyframes spin {

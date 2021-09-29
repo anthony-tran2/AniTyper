@@ -74,8 +74,8 @@ button[type="button"].info {
   margin-top: 0.5rem;
 }
 
-.margin-top-selection {
-  margin-top: 0.5rem;
+.margin-selection {
+  margin-block: 0.5rem;
 }
 
 .margin-bottom-stats {
@@ -178,14 +178,6 @@ button[type="button"].info {
     padding: 0.45rem;
   }
 
-  .margin-top-selection {
-    margin-top: 3rem;
-  }
-
-  .margin-bottom-selection {
-    margin-bottom: 0.75rem;
-  }
-
   .stat-styling {
     background-color: hsla(183, 100%, 35%, 0.72);
     border-radius: 6px;
@@ -205,6 +197,10 @@ button[type="button"].info {
 
   .right-info {
     flex-basis: 650px;
+  }
+
+  .margin-selection {
+    margin-block: 1.5rem;
   }
 
   .welcome-modal {

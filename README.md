@@ -11,7 +11,7 @@ I built this project because I loved typing on my custom mechanical keyboards an
 * HTML5
 * CSS  
 
-**Databases Used:**
+**API's Used:**
 * [Animechan](https://animechan.vercel.app/)  
 * [Jikan API](https://jikan.moe/)  
                 

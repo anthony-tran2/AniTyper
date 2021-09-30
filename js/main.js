@@ -14,6 +14,8 @@ const $loader = document.querySelector('div.loader').closest('div.row');
 const $error = document.querySelector('div.error');
 const $modalButton = document.querySelector('button.modal-button');
 const $modal = document.querySelector('.modal-row');
+const $form1 = document.querySelector('form.error-selection');
+const $form2 = document.querySelector('form.main-selection');
 let currentCharacter = 0;
 let seconds = null;
 let intervalId = null;
@@ -65,10 +67,10 @@ const gameLoading = event => {
     xhr.open('GET', 'https://animechan.vercel.app/api/random');
     xhr.responseType = 'json';
     xhr.addEventListener('load', event => {
-      const $anime = document.querySelector('h3.anime');
-      const $character = document.querySelector('h3.character');
-      $anime.textContent = `Anime: ${xhr.response.anime}`;
-      $character.textContent = `Character: ${xhr.response.character}`;
+      const $anime = document.querySelector('h3.anime > span');
+      const $character = document.querySelector('h3.character > span');
+      $anime.textContent = xhr.response.anime;
+      $character.textContent = xhr.response.character;
       const wordList = xhr.response.quote.split(' ');
       createQuote(wordList);
       data.quoteData.anime = xhr.response.anime;
@@ -81,10 +83,10 @@ const gameLoading = event => {
     $infoTitle.textContent = data.animeInfo.title;
     $infoImg.setAttribute('src', data.animeInfo.imgURL);
     $infoSynopsis.textContent = data.animeInfo.synopsis;
-    const $anime = document.querySelector('h3.anime');
-    const $character = document.querySelector('h3.character');
-    $anime.textContent = 'Anime: ' + data.quoteData.anime;
-    $character.textContent = 'Character: ' + data.quoteData.character;
+    const $anime = document.querySelector('h3.anime > span');
+    const $character = document.querySelector('h3.character > span');
+    $anime.textContent = data.quoteData.anime;
+    $character.textContent = data.quoteData.character;
     const wordList = data.quoteData.quote.split(' ');
     createQuote(wordList);
     $viewInfo.classList.toggle('hidden');
@@ -130,15 +132,15 @@ const selectedGenration = anime => {
   xhr.addEventListener('load', event => {
     if (xhr.response.error === 'No related quotes found!') {
       $error.classList.toggle('hidden');
-      $firstInput.value = data.selectedAnime;
+      $firstInput.value = anime;
     } else {
       const selectedQuoteList = xhr.response.length;
       const randomSelectedQuote = xhr.response[Math.floor(Math.random() * selectedQuoteList)];
-      const $anime = document.querySelector('h3.anime');
-      const $character = document.querySelector('h3.character');
+      const $anime = document.querySelector('h3.anime > span');
+      const $character = document.querySelector('h3.character > span');
       $secondInput.value = randomSelectedQuote.anime;
-      $anime.textContent = `Anime: ${randomSelectedQuote.anime}`;
-      $character.textContent = `Character: ${randomSelectedQuote.character}`;
+      $anime.textContent = randomSelectedQuote.anime;
+      $character.textContent = randomSelectedQuote.character;
       const wordList = randomSelectedQuote.quote.split(' ');
       createQuote(wordList);
       data.quoteData.anime = randomSelectedQuote.anime;
@@ -306,11 +308,23 @@ $modalButton.addEventListener('click', event => {
 });
 
 const handleInput = e => {
+  e.preventDefault();
+  if (e.target === $form1 || e.target === $form2) {
+    $loader.classList.toggle('hidden');
+    e.target === $form1 ? $error.classList.toggle('hidden') : $viewTyping.classList.toggle('hidden');
+    clearPage();
+    const currentSelectedAnime = e.target === $form1 ? $firstInput.value : $secondInput.value;
+    data.selectedAnime = e.target === $form1 ? $firstInput.value : $secondInput.value;
+    selectedGenration(currentSelectedAnime);
+    $secondInput.value = '';
+    return;
+  }
   var opts = document.getElementById('anime').childNodes;
   if (e.target.value === '' && data.selectedAnime) {
     $loader.classList.toggle('hidden');
     clearPage();
     data.selectedAnime = null;
+    $error.className = 'container error hidden';
     $viewTyping.className = 'container hidden';
     $viewInfo.className = 'container hidden';
     data.view = 'typing-game';
@@ -340,3 +354,5 @@ const handleInput = e => {
 
 $firstInput.oninput = handleInput;
 $secondInput.oninput = handleInput;
+$form1.addEventListener('submit', handleInput);
+$form2.addEventListener('submit', handleInput);

@@ -1,7 +1,7 @@
 input {
   background-color: #eee;
   color: black;
-  width: 167px;
+  width: 100%;
   height: 37px;
   border-radius: 4px;
 }
@@ -25,6 +25,10 @@ img {
   margin-top: 36px;
 }
 
+span {
+  font-weight: 300;
+}
+
 button:hover {
   cursor: pointer;
   background-color: hsla(205, 91%, 40%, 0.72);
@@ -43,6 +47,7 @@ button[type="button"].info {
 ::placeholder {
   color: rgb(121, 121, 121);
   font-weight: bold;
+  padding-left: 0.5rem;
 }
 
 .inactive {
@@ -74,8 +79,8 @@ button[type="button"].info {
   margin-top: 0.5rem;
 }
 
-.margin-top-selection {
-  margin-top: 0.5rem;
+.margin-selection {
+  margin-block: 0.5rem;
 }
 
 .margin-bottom-stats {
@@ -120,10 +125,21 @@ button[type="button"].info {
   background-color: #efefef;
   border: none;
   border-radius: 6px;
+  padding: 1rem;
 }
 
 .modal-header {
+  margin-top: 0;
+}
+
+.modal-body {
+  line-height: 150%;
+}
+
+.error-selection,
+.main-selection {
   width: 100%;
+  max-width: 750px;
 }
 
 @keyframes spin {
@@ -143,11 +159,7 @@ button[type="button"].info {
   }
 
   input {
-    background-color: #eee;
-    color: black;
-    width: 250px;
     height: 55px;
-    border-radius: 4px;
   }
 
   img {
@@ -173,14 +185,6 @@ button[type="button"].info {
     padding: 0.45rem;
   }
 
-  .margin-top-selection {
-    margin-top: 3rem;
-  }
-
-  .margin-bottom-selection {
-    margin-bottom: 0.75rem;
-  }
-
   .stat-styling {
     background-color: hsla(183, 100%, 35%, 0.72);
     border-radius: 6px;
@@ -200,6 +204,10 @@ button[type="button"].info {
 
   .right-info {
     flex-basis: 650px;
+  }
+
+  .margin-selection {
+    margin-block: 1.5rem;
   }
 
   .welcome-modal {
